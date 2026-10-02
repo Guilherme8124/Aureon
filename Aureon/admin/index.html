@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Aureon — Painel Administrativo</title>
+
+    <meta
+        name="description"
+        content="Painel administrativo da Aureon."
+    >
+
+    <link
+        rel="icon"
+        href="../assets/favicon.svg"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/admin.css"
+    >
+
+    <style>
+        [hidden] {
+            display: none !important;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .admin-menu-item.active {
+            opacity: 1;
+        }
+
+        .admin-loading {
+            padding: 30px;
+            text-align: center;
+            opacity: .7;
+        }
+
+        .admin-error {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            background: rgba(220, 50, 50, .12);
+            border: 1px solid rgba(220, 50, 50, .3);
+        }
+
+        .admin-success {
+            color: #35d07f !important;
+        }
+
+        .admin-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .admin-table th {
+            font-weight: 700;
+        }
+
+        .admin-empty {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .admin-toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 99999;
+            background: #151515;
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.12);
+            box-shadow: 0 10px 40px rgba(0,0,0,.3);
+        }
+
+        /* STATUS DO SERVIÇO */
+
+        .service-status-control {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .service-status-current {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .service-status-current-dot {
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            border-radius: 50%;
+            background: #8b919b;
+            box-shadow: 0 0 0 5px rgba(139,145,155,.08);
+            transition:
+                background .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .service-status-current-dot.available {
+            background: #35d07f;
+            box-shadow:
+                0 0 0 5px rgba(53,208,127,.10),
+                0 0 18px rgba(53,208,127,.45);
+        }
+
+        .service-status-current-dot.busy {
+            background: #f2c94c;
+            box-shadow:
+                0 0 0 5px rgba(242,201,76,.10),
+                0 0 18px rgba(242,201,76,.40);
+        }
+
+        .service-status-current-dot.offline {
+            background: #e5484d;
+            box-shadow:
+                0 0 0 5px rgba(229,72,77,.10),
+                0 0 18px rgba(229,72,77,.40);
+        }
+
+        .service-status-current-dot.loading {
+            background: #8b919b;
+            animation: serviceStatusPulse 1.2s infinite;
+        }
+
+        .service-status-current-dot.error,
+        .service-status-current-dot.unknown {
+            background: #a0a5ad;
+            box-shadow: 0 0 0 5px rgba(160,165,173,.08);
+        }
+
+        @keyframes serviceStatusPulse {
+            0%, 100% {
+                opacity: .45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .service-status-options {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .service-status-option {
+            position: relative;
+        }
+
+        .service-status-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .service-status-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            min-height: 78px;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.10);
+            background: rgba(255,255,255,.025);
+            color: inherit;
+            cursor: pointer;
+            transition:
+                transform .2s ease,
+                border-color .2s ease,
+                background .2s ease,
+                box-shadow .2s ease,
+                opacity .2s ease;
+        }
+
+        .service-status-button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,.22);
+            background: rgba(255,255,255,.05);
+        }
+
+        .service-status-option input:checked + .service-status-button {
+            border-color: rgba(212,168,75,.8);
+            background: rgba(212,168,75,.08);
+            box-shadow: 0 0 0 1px rgba(212,168,75,.18);
+        }
+
+        .service-status-option input:disabled + .service-status-button {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .service-status-option input:focus-visible + .service-status-button {
+            outline: 2px solid rgba(212,168,75,.7);
+            outline-offset: 3px;
+        }
+
+        .service-status-button-dot {
+            width: 12px;
+            height: 12px;
+            min-width: 12px;
+            border-radius: 50%;
+        }
+
+        .service-status-button-dot.available {
+            background: #35d07f;
+            box-shadow: 0 0 12px rgba(53,208,127,.45);
+        }
+
+        .service-status-button-dot.busy {
+            background: #f2c94c;
+            box-shadow: 0 0 12px rgba(242,201,76,.40);
+        }
+
+        .service-status-button-dot.offline {
+            background: #e5484d;
+            box-shadow: 0 0 12px rgba(229,72,77,.40);
+        }
+
+        .service-status-button-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
+        }
+
+        .service-status-button-content strong {
+            font-size: .95rem;
+        }
+
+        .service-status-button-content span {
+            font-size: .78rem;
+            opacity: .65;
+        }
+
+        .service-status-save {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .service-status-save-status {
+            min-height: 22px;
+        }
+
+        .service-status-info {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.035);
+            border: 1px solid rgba(255,255,255,.08);
+            font-size: .88rem;
+            opacity: .8;
+            line-height: 1.8;
+        }
+
+        .service-status-dashboard {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 32px;
+        }
+
+        .service-status-dashboard-dot {
+            width: 9px;
+            height: 9px;
+            min-width: 9px;
+            border-radius: 50%;
+            background: #8b919b;
+        }
+
+        .service-status-dashboard-dot.available {
+            background: #35d07f;
+            box-shadow: 0 0 12px rgba(53,208,127,.45);
+        }
+
+        .service-status-dashboard-dot.busy {
+            background: #f2c94c;
+            box-shadow: 0 0 12px rgba(242,201,76,.40);
+        }
+
+        .service-status-dashboard-dot.offline {
+            background: #e5484d;
+            box-shadow: 0 0 12px rgba(229,72,77,.40);
+        }
+
+        .service-status-dashboard-dot.loading,
+        .service-status-dashboard-dot.error,
+        .service-status-dashboard-dot.unknown {
+            background: #8b919b;
+        }
+
+        #service-status-control[data-status="loading"],
+        #service-status-control[data-status="error"],
+        #service-status-control[data-status="unknown"] {
+            border-color: rgba(255,255,255,.08);
+        }
+
+        #service-status-save-status.error {
+            color: #e5484d;
+        }
+
+        #service-status-save-status.loading {
+            color: #a0a5ad;
+        }
+
+        @media (max-width: 800px) {
+            .service-status-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .service-status-save {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .service-status-save .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<section id="login-screen" class="admin-login">
+
+    <div class="admin-login-card">
+
+        <div class="admin-logo">
+            <div class="admin-logo-symbol">A</div>
+
+            <div>
+                <strong>Aureon</strong>
+                <span>Painel Administrativo</span>
+            </div>
+        </div>
+
+        <h1>Entrar no painel</h1>
+
+        <p class="admin-login-description">
+            Acesse o painel administrativo da Aureon.
+        </p>
+
+        <form id="login-form">
+
+            <div class="form-group">
+                <label for="login-email">E-mail</label>
+
+                <input
+                    type="email"
+                    id="login-email"
+                    placeholder="seu@email.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">Senha</label>
+
+                <input
+                    type="password"
+                    id="login-password"
+                    placeholder="Sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                id="login-button"
+                class="btn btn-primary"
+                style="width:100%;"
+            >
+                Entrar
+            </button>
+
+            <p id="login-error" class="form-status"></p>
+
+        </form>
+
+        <a href="../index.html" class="back-site">
+            ← Voltar para o site
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ADMIN -->
+
+<div id="admin-app" class="admin-app" hidden>
+
+    <aside id="admin-sidebar" class="admin-sidebar">
+
+        <div class="admin-sidebar-header">
+
+            <div class="admin-brand">
+
+                <div class="admin-logo-symbol">A</div>
+
+                <div>
+                    <strong>Aureon</strong>
+                    <span>Admin</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <nav class="admin-menu" id="admin-menu">
+
+            <button type="button" class="admin-menu-item active" data-section="dashboard">
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="leads">
+                <span>👤</span>
+                Leads
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="messages">
+                <span>✉</span>
+                Mensagens
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="quotes">
+                <span>▣</span>
+                Orçamentos
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="library">
+                <span>▤</span>
+                Biblioteca
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="news">
+                <span>◉</span>
+                Novidades
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="projects">
+                <span>◆</span>
+                Projetos
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="comments">
+                <span>💬</span>
+                Comentários
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="ai">
+                <span>✦</span>
+                Aureon AI
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="statistics">
+                <span>▥</span>
+                Estatísticas
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="settings">
+                <span>⚙</span>
+                Configurações
+            </button>
+
+            <button type="button" class="admin-menu-item" data-section="service-status">
+                <span>●</span>
+                Status do serviço
+            </button>
+
+        </nav>
+
+        <div class="admin-sidebar-footer">
+
+            <a href="../index.html">
+                ← Ver site
+            </a>
+
+            <button type="button" id="logout">
+                Sair
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-header">
+
+            <button
+                id="admin-menu-toggle"
+                class="admin-mobile-menu"
+                type="button"
+                aria-label="Abrir menu"
+            >
+                ☰
+            </button>
+
+            <div>
+
+                <h1 id="admin-page-title">
+                    Dashboard
+                </h1>
+
+                <p>
+                    Gerencie a Aureon pelo painel administrativo.
+                </p>
+
+            </div>
+
+            <div class="admin-header-actions">
+
+                <button
+                    id="refresh-dashboard"
+                    class="btn btn-secondary"
+                    type="button"
+                >
+                    ↻ Atualizar
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+
+        <section
+            id="section-dashboard"
+            class="admin-section active"
+        >
+
+            <div class="admin-welcome">
+
+                <div>
+
+                    <span class="eyebrow">
+                        PAINEL AUREON
+                    </span>
+
+                    <h2>
+                        Olá, administrador.
+                    </h2>
+
+                    <p>
+                        Aqui você pode acompanhar e administrar
+                        o conteúdo e os contatos da Aureon.
+                    </p>
+
+                </div>
+
+                <div
+                    id="dashboard-service-status"
+                    class="service-status-dashboard loading"
+                    data-status="loading"
+                >
+
+                    <span class="service-status-dashboard-dot loading"></span>
+
+                    <strong>
+                        Verificando...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-stats">
+
+                <div class="admin-stat-card">
+                    <span class="admin-stat-icon">◆</span>
+
+                    <div>
+                        <span>Projetos</span>
+                        <strong id="total-projects">0</strong>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <span class="admin-stat-icon">▤</span>
+
+                    <div>
+                        <span>Artigos</span>
+                        <strong id="total-articles">0</strong>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <span class="admin-stat-icon">✉</span>
+
+                    <div>
+                        <span>Mensagens</span>
+                        <strong id="total-messages">0</strong>
+                    </div>
+                </div>
+
+                <div class="admin-stat-card">
+                    <span class="admin-stat-icon">👤</span>
+
+                    <div>
+                        <span>Leads</span>
+                        <strong id="total-leads">0</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="admin-dashboard-grid">
+
+                <div class="admin-panel">
+
+                    <div class="admin-panel-header">
+
+                        <div>
+                            <h3>Visão geral</h3>
+
+                            <p>
+                                Resumo da plataforma.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="admin-overview">
+
+                        <div>
+                            <span>Status</span>
+
+                            <strong id="dashboard-status-text">
+                                Verificando...
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Administrador</span>
+
+                            <strong id="admin-user-email">
+                                —
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-panel">
+
+                    <div class="admin-panel-header">
+
+                        <div>
+                            <h3>Acesso rápido</h3>
+
+                            <p>
+                                Ações frequentes.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="admin-quick-actions">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-section="projects"
+                        >
+                            + Projeto
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-section="library"
+                        >
+                            + Artigo
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-section="news"
+                        >
+                            + Novidade
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LEADS -->
+
+        <section id="section-leads" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Leads</h2>
+
+                    <p>
+                        Pessoas interessadas nos serviços da Aureon.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-leads" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando leads...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- MENSAGENS -->
+
+        <section id="section-messages" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Mensagens</h2>
+
+                    <p>
+                        Mensagens enviadas pelo formulário de contato.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-messages" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando mensagens...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ORÇAMENTOS -->
+
+        <section id="section-quotes" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Orçamentos</h2>
+
+                    <p>
+                        Gerencie propostas e orçamentos.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="admin-empty">
+
+                <div class="admin-empty-icon">
+                    ▣
+                </div>
+
+                <h3>
+                    Módulo de orçamentos
+                </h3>
+
+                <p>
+                    O gerenciamento de propostas será conectado
+                    ao banco de dados.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- BIBLIOTECA -->
+
+        <section id="section-library" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Biblioteca</h2>
+
+                    <p>
+                        Gerencie os artigos publicados no site.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-articles" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando artigos...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- NOVIDADES -->
+
+        <section id="section-news" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Novidades</h2>
+
+                    <p>
+                        Gerencie atualizações e notícias da Aureon.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-news" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando novidades...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- PROJETOS -->
+
+        <section id="section-projects" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Projetos</h2>
+
+                    <p>
+                        Gerencie os projetos exibidos no site.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-projects" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando projetos...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- COMENTÁRIOS -->
+
+        <section id="section-comments" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Comentários</h2>
+
+                    <p>
+                        Modere comentários enviados pelos visitantes.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="admin-comments" class="admin-table-container">
+                <div class="admin-loading">
+                    Carregando comentários...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- AI -->
+
+        <section id="section-ai" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Aureon AI</h2>
+
+                    <p>
+                        Configurações do assistente de inteligência artificial.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="admin-panel">
+
+                <div class="ai-admin-status">
+
+                    <span class="status-dot online"></span>
+
+                    <div>
+
+                        <strong>
+                            Aureon AI
+                        </strong>
+
+                        <p>
+                            O assistente poderá ser conectado
+                            através de uma Netlify Function.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ESTATÍSTICAS -->
+
+        <section id="section-statistics" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Estatísticas</h2>
+
+                    <p>
+                        Acompanhe os principais dados da Aureon.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="admin-panel">
+
+                <div class="admin-overview">
+
+                    <div>
+                        <span>Projetos</span>
+                        <strong id="statistics-projects">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Artigos</span>
+                        <strong id="statistics-articles">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Leads</span>
+                        <strong id="statistics-leads">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Mensagens</span>
+                        <strong id="statistics-messages">0</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONFIGURAÇÕES -->
+
+        <section id="section-settings" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+                    <h2>Configurações</h2>
+
+                    <p>
+                        Configurações gerais do site.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="admin-panel">
+
+                <form id="settings-form">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="setting-site-name">
+                                Nome do site
+                            </label>
+
+                            <input
+                                type="text"
+                                id="setting-site-name"
+                                name="site_name"
+                                value="Aureon"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="setting-whatsapp">
+                                WhatsApp
+                            </label>
+
+                            <input
+                                type="text"
+                                id="setting-whatsapp"
+                                name="whatsapp"
+                                value="+55 99 98488-3104"
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="setting-description">
+                            Descrição
+                        </label>
+
+                        <textarea
+                            id="setting-description"
+                            name="description"
+                            rows="4"
+                        >Ideias que se tornam tecnologia.</textarea>
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Salvar configurações
+                    </button>
+
+                    <p
+                        id="settings-status"
+                        class="form-status"
+                    ></p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATUS DO SERVIÇO -->
+
+        <section id="section-service-status" class="admin-section">
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <h2>
+                        Status do serviço
+                    </h2>
+
+                    <p>
+                        Controle a disponibilidade da Aureon
+                        para novos clientes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="admin-panel service-status-control"
+                id="service-status-control"
+                data-status="loading"
+            >
+
+                <div>
+
+                    <span class="eyebrow">
+                        STATUS ATUAL
+                    </span>
+
+                    <div class="service-status-current" style="margin-top:12px;">
+
+                        <span
+                            id="service-status-current-dot"
+                            class="service-status-current-dot loading"
+                        ></span>
+
+                        <div>
+
+                            <h3
+                                id="service-status-text"
+                                style="margin:0;"
+                            >
+                                Verificando...
+                            </h3>
+
+                            <p
+                                id="service-status-description"
+                                style="margin:4px 0 0;"
+                            >
+                                Consultando o status atual...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <span class="eyebrow">
+                        ALTERAR STATUS
+                    </span>
+
+                    <div
+                        class="service-status-options"
+                        style="margin-top:14px;"
+                    >
+
+                        <label class="service-status-option">
+
+                            <input
+                                type="radio"
+                                name="service-status"
+                                value="available"
+                                id="service-status-available"
+                                disabled
+                            >
+
+                            <span class="service-status-button">
+
+                                <span class="service-status-button-dot available"></span>
+
+                                <span class="service-status-button-content">
+
+                                    <strong>
+                                        Disponível
+                                    </strong>
+
+                                    <span>
+                                        Atendimento disponível
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="service-status-option">
+
+                            <input
+                                type="radio"
+                                name="service-status"
+                                value="busy"
+                                id="service-status-busy"
+                                disabled
+                            >
+
+                            <span class="service-status-button">
+
+                                <span class="service-status-button-dot busy"></span>
+
+                                <span class="service-status-button-content">
+
+                                    <strong>
+                                        Em atendimento
+                                    </strong>
+
+                                    <span>
+                                        Atendendo no momento
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="service-status-option">
+
+                            <input
+                                type="radio"
+                                name="service-status"
+                                value="offline"
+                                id="service-status-offline"
+                                disabled
+                            >
+
+                            <span class="service-status-button">
+
+                                <span class="service-status-button-dot offline"></span>
+
+                                <span class="service-status-button-content">
+
+                                    <strong>
+                                        Indisponível
+                                    </strong>
+
+                                    <span>
+                                        Sem atendimento
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="service-status-info">
+
+                    <strong>
+                        Como funciona:
+                    </strong>
+
+                    <br>
+
+                    🟢 Disponível — novos atendimentos podem ser realizados.
+
+                    <br>
+
+                    🟡 Em atendimento — a Aureon está atendendo clientes.
+
+                    <br>
+
+                    🔴 Indisponível — não há atendimento no momento.
+
+                    <br>
+
+                    ⚠️ Se houver erro de comunicação com o banco,
+                    o sistema não altera o status salvo.
+
+                </div>
+
+
+                <div class="service-status-save">
+
+                    <p
+                        id="service-status-save-status"
+                        class="form-status service-status-save-status"
+                        style="margin:0;"
+                    ></p>
+
+                    <button
+                        type="button"
+                        id="save-service-status"
+                        class="btn btn-primary"
+                        disabled
+                    >
+                        Salvar status
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="admin-toast"
+    class="admin-toast"
+    hidden
+></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../js/config.js"></script>
+
+
+<script>
+
+(() => {
+
+    "use strict";
+
+    const CONFIG = window.AUREON_CONFIG || {};
+
+    const SUPABASE_URL =
+        CONFIG.SUPABASE_URL || "";
+
+    const SUPABASE_ANON_KEY =
+        CONFIG.SUPABASE_ANON_KEY || "";
+
+    let supabaseClient = null;
+    let currentUser = null;
+    let statusPollingTimer = null;
+    let isLoadingServiceStatus = false;
+    let lastConfirmedServiceStatus = null;
+
+    const STATUS_VALUES = [
+        "available",
+        "busy",
+        "offline"
+    ];
+
+    const STATUS_CONFIG = {
+
+        available: {
+            title: "Disponível",
+            description:
+                "A Aureon está disponível para novos atendimentos.",
+            dashboard: "Disponível"
+        },
+
+        busy: {
+            title: "Em atendimento",
+            description:
+                "A Aureon está atendendo clientes no momento.",
+            dashboard: "Em atendimento"
+        },
+
+        offline: {
+            title: "Indisponível",
+            description:
+                "A Aureon não está disponível para novos atendimentos no momento.",
+            dashboard: "Indisponível"
+        }
+
+    };
+
+
+    /* =====================================================
+       ELEMENTOS
+    ===================================================== */
+
+    const loginScreen =
+        document.getElementById("login-screen");
+
+    const adminApp =
+        document.getElementById("admin-app");
+
+    const loginForm =
+        document.getElementById("login-form");
+
+    const loginError =
+        document.getElementById("login-error");
+
+    const loginButton =
+        document.getElementById("login-button");
+
+    const logoutButton =
+        document.getElementById("logout");
+
+    const adminUserEmail =
+        document.getElementById("admin-user-email");
+
+    const pageTitle =
+        document.getElementById("admin-page-title");
+
+    const toast =
+        document.getElementById("admin-toast");
+
+
+    /* =====================================================
+       UTILITÁRIOS
+    ===================================================== */
+
+    function isValidServiceStatus(value) {
+        return STATUS_VALUES.includes(value);
+    }
+
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function showToast(message) {
+
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.hidden = false;
+
+        clearTimeout(showToast.timer);
+
+        showToast.timer = setTimeout(() => {
+            toast.hidden = true;
+        }, 3500);
+
+    }
+
+
+    function showLoginError(message) {
+
+        if (loginError) {
+            loginError.textContent = message || "";
+        }
+
+    }
+
+
+    /* =====================================================
+       SUPABASE
+    ===================================================== */
+
+    function initializeSupabase() {
+
+        if (!window.supabase) {
+
+            showLoginError(
+                "Não foi possível carregar o Supabase."
+            );
+
+            return false;
+        }
+
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+
+            showLoginError(
+                "Configuração do Supabase não encontrada."
+            );
+
+            return false;
+        }
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
+    async function login(email, password) {
+
+        if (!supabaseClient) {
+            showLoginError(
+                "Supabase não está inicializado."
+            );
+            return;
+        }
+
+        loginButton.disabled = true;
+        loginButton.textContent = "Entrando...";
+        showLoginError("");
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data?.user) {
+                throw new Error(
+                    "Usuário não retornado pelo Supabase."
+                );
+            }
+
+            currentUser = data.user;
+
+            await openAdmin();
+
+        } catch (error) {
+
+            console.error("Erro no login:", error);
+
+            showLoginError(
+                error.message ||
+                "E-mail ou senha incorretos."
+            );
+
+        } finally {
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Entrar";
+
+        }
+
+    }
+
+
+    async function openAdmin() {
+
+        if (!currentUser) return;
+
+        loginScreen.hidden = true;
+        adminApp.hidden = false;
+
+        if (adminUserEmail) {
+            adminUserEmail.textContent =
+                currentUser.email || "Administrador";
+        }
+
+        updateDashboardStatus("Conectado");
+
+        await loadDashboard();
+
+        showSection("dashboard");
+
+        startStatusPolling();
+
+    }
+
+
+    async function logout() {
+
+        stopStatusPolling();
+
+        currentUser = null;
+        lastConfirmedServiceStatus = null;
+
+        try {
+
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao sair:",
+                error
+            );
+
+        }
+
+        adminApp.hidden = true;
+        loginScreen.hidden = false;
+
+        if (loginForm) {
+            loginForm.reset();
+        }
+
+        showLoginError("");
+
+        setServiceStatusLoading();
+
+    }
+
+
+    /* =====================================================
+       MENU
+    ===================================================== */
+
+    const menuButtons =
+        document.querySelectorAll("[data-section]");
+
+
+    function showSection(sectionName) {
+
+        document
+            .querySelectorAll(".admin-section")
+            .forEach(section => {
+                section.classList.remove("active");
+            });
+
+        const target =
+            document.getElementById(
+                `section-${sectionName}`
+            );
+
+        if (!target) return;
+
+        target.classList.add("active");
+
+        menuButtons.forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.section === sectionName
+            );
+
+        });
+
+        const titles = {
+            dashboard: "Dashboard",
+            leads: "Leads",
+            messages: "Mensagens",
+            quotes: "Orçamentos",
+            library: "Biblioteca",
+            news: "Novidades",
+            projects: "Projetos",
+            comments: "Comentários",
+            ai: "Aureon AI",
+            statistics: "Estatísticas",
+            settings: "Configurações",
+            "service-status": "Status do serviço"
+        };
+
+        if (pageTitle) {
+            pageTitle.textContent =
+                titles[sectionName] || "Aureon";
+        }
+
+        if (window.innerWidth <= 900) {
+
+            document
+                .getElementById("admin-sidebar")
+                ?.classList.remove("open");
+
+        }
+
+        if (sectionName === "leads") {
+            loadTable("leads", "admin-leads");
+        }
+
+        if (sectionName === "messages") {
+            loadTable("messages", "admin-messages");
+        }
+
+        if (sectionName === "library") {
+            loadTable("articles", "admin-articles");
+        }
+
+        if (sectionName === "news") {
+            loadTable("news", "admin-news");
+        }
+
+        if (sectionName === "projects") {
+            loadTable("projects", "admin-projects");
+        }
+
+        if (sectionName === "comments") {
+            loadTable("comments", "admin-comments");
+        }
+
+        if (sectionName === "settings") {
+            loadSettings();
+        }
+
+        if (sectionName === "service-status") {
+            loadServiceStatus();
+        }
+
+    }
+
+
+    menuButtons.forEach(button => {
+
+        button.addEventListener("click", event => {
+
+            event.preventDefault();
+
+            if (button.dataset.section) {
+                showSection(button.dataset.section);
+            }
+
+        });
+
+    });
+
+
+    /* =====================================================
+       DASHBOARD
+    ===================================================== */
+
+    async function loadDashboard() {
+
+        if (!supabaseClient || !currentUser) {
+            return;
+        }
+
+        const tables = [
+            {
+                table: "projects",
+                element: "total-projects"
+            },
+            {
+                table: "articles",
+                element: "total-articles"
+            },
+            {
+                table: "messages",
+                element: "total-messages"
+            },
+            {
+                table: "leads",
+                element: "total-leads"
+            }
+        ];
+
+        for (const item of tables) {
+
+            try {
+
+                const {
+                    count,
+                    error
+                } = await supabaseClient
+                    .from(item.table)
+                    .select("*", {
+                        count: "exact",
+                        head: true
+                    });
+
+                if (error) {
+                    throw error;
+                }
+
+                const element =
+                    document.getElementById(item.element);
+
+                if (element) {
+                    element.textContent = count ?? 0;
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    `Erro ao contar ${item.table}:`,
+                    error
+                );
+
+            }
+
+        }
+
+        const map = [
+            ["statistics-projects", "total-projects"],
+            ["statistics-articles", "total-articles"],
+            ["statistics-leads", "total-leads"],
+            ["statistics-messages", "total-messages"]
+        ];
+
+        map.forEach(([targetId, sourceId]) => {
+
+            const target =
+                document.getElementById(targetId);
+
+            const source =
+                document.getElementById(sourceId);
+
+            if (target && source) {
+                target.textContent =
+                    source.textContent || "0";
+            }
+
+        });
+
+        await loadServiceStatus();
+
+    }
+
+
+    function updateDashboardStatus(text) {
+
+        const element =
+            document.getElementById(
+                "dashboard-status-text"
+            );
+
+        if (element) {
+            element.textContent = text;
+        }
+
+    }
+
+
+    function updateDashboardServiceStatus(
+        status,
+        text
+    ) {
+
+        const dashboard =
+            document.getElementById(
+                "dashboard-service-status"
+            );
+
+        if (!dashboard) return;
+
+        const allowed = [
+            "available",
+            "busy",
+            "offline",
+            "loading",
+            "error",
+            "unknown"
+        ];
+
+        const safeStatus =
+            allowed.includes(status)
+                ? status
+                : "unknown";
+
+        dashboard.className =
+            `service-status-dashboard ${safeStatus}`;
+
+        dashboard.dataset.status =
+            safeStatus;
+
+        dashboard.innerHTML = `
+            <span
+                class="service-status-dashboard-dot ${safeStatus}"
+            ></span>
+
+            <strong>
+                ${escapeHTML(text)}
+            </strong>
+        `;
+
+    }
+
+
+    /* =====================================================
+       TABELAS
+    ===================================================== */
+
+    async function loadTable(
+        tableName,
+        containerId
+    ) {
+
+        const container =
+            document.getElementById(containerId);
+
+        if (!container || !supabaseClient) {
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="admin-loading">
+                Carregando...
+            </div>
+        `;
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from(tableName)
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data?.length) {
+
+                container.innerHTML = `
+                    <div class="admin-empty">
+
+                        <h3>
+                            Nenhum registro encontrado
+                        </h3>
+
+                        <p>
+                            Não existem dados disponíveis
+                            nesta seção.
+                        </p>
+
+                    </div>
+                `;
+
+                return;
+            }
+
+            renderTable(container, data);
+
+        } catch (error) {
+
+            console.error(
+                `Erro ao carregar ${tableName}:`,
+                error
+            );
+
+            container.innerHTML = `
+                <div class="admin-error">
+
+                    <strong>
+                        Não foi possível carregar os dados.
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(
+                            error.message ||
+                            "Erro desconhecido."
+                        )}
+                    </p>
+
+                </div>
+            `;
+
+        }
+
+    }
+
+
+    function renderTable(container, data) {
+
+        const columns =
+            Object.keys(data[0] || {});
+
+        const visibleColumns =
+            columns.slice(0, 8);
+
+        let html = `
+            <div class="admin-table-wrapper">
+
+                <table class="admin-table">
+
+                    <thead>
+                        <tr>
+        `;
+
+        visibleColumns.forEach(column => {
+
+            html += `
+                <th>
+                    ${escapeHTML(
+                        formatColumnName(column)
+                    )}
+                </th>
+            `;
+
+        });
+
+        html += `
+                        </tr>
+                    </thead>
+
+                    <tbody>
+        `;
+
+        data.forEach(row => {
+
+            html += "<tr>";
+
+            visibleColumns.forEach(column => {
+
+                let value = row[column];
+
+                if (
+                    value === null ||
+                    value === undefined
+                ) {
+                    value = "—";
+                }
+
+                if (typeof value === "object") {
+                    value = JSON.stringify(value);
+                }
+
+                const text = String(value);
+
+                html += `
+                    <td>
+                        ${escapeHTML(
+                            text.length > 100
+                                ? text.slice(0, 100) + "..."
+                                : text
+                        )}
+                    </td>
+                `;
+
+            });
+
+            html += "</tr>";
+
+        });
+
+        html += `
+                    </tbody>
+
+                </table>
+
+            </div>
+        `;
+
+        container.innerHTML = html;
+
+    }
+
+
+    function formatColumnName(name) {
+
+        return name
+            .replace(/_/g, " ")
+            .replace(
+                /\b\w/g,
+                letter => letter.toUpperCase()
+            );
+
+    }
+
+
+    /* =====================================================
+       CONFIGURAÇÕES
+    ===================================================== */
+
+    async function loadSettings() {
+
+        if (!supabaseClient) return;
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("site_settings")
+                .select(
+                    "id,site_name,whatsapp,description"
+                )
+                .limit(1)
+                .maybeSingle();
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data) return;
+
+            const siteName =
+                document.getElementById(
+                    "setting-site-name"
+                );
+
+            const whatsapp =
+                document.getElementById(
+                    "setting-whatsapp"
+                );
+
+            const description =
+                document.getElementById(
+                    "setting-description"
+                );
+
+            if (siteName && data.site_name) {
+                siteName.value = data.site_name;
+            }
+
+            if (whatsapp && data.whatsapp) {
+                whatsapp.value = data.whatsapp;
+            }
+
+            if (description && data.description) {
+                description.value = data.description;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao carregar configurações:",
+                error
+            );
+
+        }
+
+    }
+
+
+    async function saveSettings(event) {
+
+        event.preventDefault();
+
+        const status =
+            document.getElementById(
+                "settings-status"
+            );
+
+        const siteName =
+            document
+                .getElementById("setting-site-name")
+                .value
+                .trim();
+
+        const whatsapp =
+            document
+                .getElementById("setting-whatsapp")
+                .value
+                .trim();
+
+        const description =
+            document
+                .getElementById("setting-description")
+                .value
+                .trim();
+
+        if (status) {
+            status.textContent = "Salvando...";
+            status.classList.remove("admin-success");
+        }
+
+        try {
+
+            const {
+                data: existing,
+                error: findError
+            } = await supabaseClient
+                .from("site_settings")
+                .select("id")
+                .limit(1)
+                .maybeSingle();
+
+            if (findError) {
+                throw findError;
+            }
+
+            const payload = {
+                site_name: siteName,
+                whatsapp: whatsapp,
+                description: description
+            };
+
+            let result;
+
+            if (existing?.id) {
+
+                result =
+                    await supabaseClient
+                        .from("site_settings")
+                        .update(payload)
+                        .eq("id", existing.id);
+
+            } else {
+
+                result =
+                    await supabaseClient
+                        .from("site_settings")
+                        .insert({
+                            id: 1,
+                            ...payload
+                        });
+
+            }
+
+            if (result.error) {
+                throw result.error;
+            }
+
+            if (status) {
+
+                status.textContent =
+                    "Configurações salvas com sucesso.";
+
+                status.classList.add(
+                    "admin-success"
+                );
+
+            }
+
+            showToast(
+                "Configurações salvas."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao salvar configurações:",
+                error
+            );
+
+            if (status) {
+
+                status.textContent =
+                    "Erro: " +
+                    (
+                        error.message ||
+                        "não foi possível salvar."
+                    );
+
+                status.classList.remove(
+                    "admin-success"
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       STATUS DO SERVIÇO
+    ===================================================== */
+
+    function setServiceStatusLoading() {
+
+        const control =
+            document.getElementById(
+                "service-status-control"
+            );
+
+        const dot =
+            document.getElementById(
+                "service-status-current-dot"
+            );
+
+        const text =
+            document.getElementById(
+                "service-status-text"
+            );
+
+        const description =
+            document.getElementById(
+                "service-status-description"
+            );
+
+        const saveMessage =
+            document.getElementById(
+                "service-status-save-status"
+            );
+
+        if (control) {
+            control.dataset.status = "loading";
+        }
+
+        if (dot) {
+            dot.className =
+                "service-status-current-dot loading";
+        }
+
+        if (text) {
+            text.textContent =
+                "Verificando...";
+        }
+
+        if (description) {
+            description.textContent =
+                "Consultando o status atual no banco de dados...";
+        }
+
+        if (saveMessage) {
+            saveMessage.textContent = "";
+            saveMessage.className =
+                "form-status service-status-save-status";
+        }
+
+        updateDashboardStatus(
+            "Verificando..."
+        );
+
+        updateDashboardServiceStatus(
+            "loading",
+            "Verificando..."
+        );
+
+        setStatusControlsDisabled(true);
+
+    }
+
+
+    function setServiceStatusError(error) {
+
+        const message =
+            error?.message ||
+            "Não foi possível consultar o status.";
+
+        const control =
+            document.getElementById(
+                "service-status-control"
+            );
+
+        const dot =
+            document.getElementById(
+                "service-status-current-dot"
+            );
+
+        const text =
+            document.getElementById(
+                "service-status-text"
+            );
+
+        const description =
+            document.getElementById(
+                "service-status-description"
+            );
+
+        if (control) {
+            control.dataset.status = "error";
+        }
+
+        if (dot) {
+            dot.className =
+                "service-status-current-dot error";
+        }
+
+        if (text) {
+            text.textContent =
+                "Status indisponível";
+        }
+
+        if (description) {
+            description.textContent =
+                message;
+        }
+
+        /*
+         * IMPORTANTE:
+         * Erro de conexão NÃO significa offline.
+         */
+
+        document
+            .querySelectorAll(
+                'input[name="service-status"]'
+            )
+            .forEach(input => {
+                input.checked = false;
+            });
+
+        updateDashboardStatus(
+            "Status indisponível"
+        );
+
+        updateDashboardServiceStatus(
+            "error",
+            "Status indisponível"
+        );
+
+        setStatusControlsDisabled(true);
+
+    }
+
+
+    function setStatusControlsDisabled(disabled) {
+
+        document
+            .querySelectorAll(
+                'input[name="service-status"]'
+            )
+            .forEach(radio => {
+                radio.disabled = disabled;
+            });
+
+        const saveButton =
+            document.getElementById(
+                "save-service-status"
+            );
+
+        if (saveButton) {
+            saveButton.disabled = disabled;
+        }
+
+    }
+
+
+    function updateStatusUI(status) {
+
+        if (!isValidServiceStatus(status)) {
+
+            setServiceStatusError(
+                new Error(
+                    "O banco retornou um status inválido."
+                )
+            );
+
+            return false;
+
+        }
+
+        const config =
+            STATUS_CONFIG[status];
+
+        const control =
+            document.getElementById(
+                "service-status-control"
+            );
+
+        const dot =
+            document.getElementById(
+                "service-status-current-dot"
+            );
+
+        const text =
+            document.getElementById(
+                "service-status-text"
+            );
+
+        const description =
+            document.getElementById(
+                "service-status-description"
+            );
+
+        if (control) {
+            control.dataset.status = status;
+        }
+
+        if (dot) {
+            dot.className =
+                `service-status-current-dot ${status}`;
+        }
+
+        if (text) {
+            text.textContent =
+                config.title;
+        }
+
+        if (description) {
+            description.textContent =
+                config.description;
+        }
+
+        document
+            .querySelectorAll(
+                'input[name="service-status"]'
+            )
+            .forEach(input => {
+
+                input.checked =
+                    input.value === status;
+
+            });
+
+        lastConfirmedServiceStatus =
+            status;
+
+        updateDashboardServiceStatus(
+            status,
+            config.dashboard
+        );
+
+        updateDashboardStatus(
+            config.dashboard
+        );
+
+        setStatusControlsDisabled(false);
+
+        return true;
+
+    }
+
+
+    async function loadServiceStatus() {
+
+        if (!supabaseClient || !currentUser) {
+            return;
+        }
+
+        if (isLoadingServiceStatus) {
+            return;
+        }
+
+        isLoadingServiceStatus = true;
+
+        setServiceStatusLoading();
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+                .from("site_settings")
+                .select("id,service_status")
+                .limit(1)
+                .maybeSingle();
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data) {
+
+                throw new Error(
+                    "Registro de configurações não encontrado."
+                );
+
+            }
+
+            const status =
+                data.service_status;
+
+            if (!isValidServiceStatus(status)) {
+
+                throw new Error(
+                    `Status inválido retornado pelo banco: ${
+                        status ?? "vazio"
+                    }`
+                );
+
+            }
+
+            updateStatusUI(status);
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao carregar status do serviço:",
+                error
+            );
+
+            setServiceStatusError(error);
+
+        } finally {
+
+            isLoadingServiceStatus = false;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SALVAR STATUS
+    ===================================================== */
+
+    async function saveServiceStatus() {
+
+        if (!supabaseClient || !currentUser) {
+
+            showToast(
+                "Sessão administrativa não encontrada."
+            );
+
+            return;
+
+        }
+
+        const selected =
+            document.querySelector(
+                'input[name="service-status"]:checked'
+            );
+
+        const saveButton =
+            document.getElementById(
+                "save-service-status"
+            );
+
+        const statusMessage =
+            document.getElementById(
+                "service-status-save-status"
+            );
+
+        if (!selected) {
+
+            showToast(
+                "Selecione um status."
+            );
+
+            return;
+
+        }
+
+        const newStatus =
+            selected.value;
+
+        if (!isValidServiceStatus(newStatus)) {
+
+            showToast(
+                "Status inválido."
+            );
+
+            return;
+
+        }
+
+        const config =
+            STATUS_CONFIG[newStatus];
+
+        if (saveButton) {
+
+            saveButton.disabled = true;
+            saveButton.textContent = "Salvando...";
+
+        }
+
+        if (statusMessage) {
+
+            statusMessage.textContent =
+                "Salvando status...";
+
+            statusMessage.className =
+                "form-status service-status-save-status loading";
+
+        }
+
+        try {
+
+            const {
+                data: existing,
+                error: findError
+            } = await supabaseClient
+                .from("site_settings")
+                .select("id")
+                .limit(1)
+                .maybeSingle();
+
+            if (findError) {
+                throw findError;
+            }
+
+            if (!existing?.id) {
+
+                throw new Error(
+                    "Registro de configurações não encontrado."
+                );
+
+            }
+
+            const {
+                error
+            } = await supabaseClient
+                .from("site_settings")
+                .update({
+                    service_status: newStatus,
+                    updated_at:
+                        new Date().toISOString()
+                })
+                .eq("id", existing.id);
+
+            if (error) {
+                throw error;
+            }
+
+            /*
+             * Reconsulta o banco depois do UPDATE.
+             * Assim a interface só considera o status
+             * confirmado pelo banco.
+             */
+
+            isLoadingServiceStatus = false;
+
+            await loadServiceStatus();
+
+            if (
+                lastConfirmedServiceStatus !==
+                newStatus
+            ) {
+
+                throw new Error(
+                    "O banco não confirmou o novo status."
+                );
+
+            }
+
+            if (statusMessage) {
+
+                statusMessage.textContent =
+                    "Status salvo com sucesso.";
+
+                statusMessage.className =
+                    "form-status service-status-save-status admin-success";
+
+            }
+
+            showToast(
+                `Status alterado para "${config.title}".`
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao salvar status:",
+                error
+            );
+
+            if (statusMessage) {
+
+                statusMessage.textContent =
+                    "Erro: " +
+                    (
+                        error.message ||
+                        "não foi possível salvar."
+                    );
+
+                statusMessage.className =
+                    "form-status service-status-save-status error";
+
+            }
+
+            showToast(
+                "Não foi possível salvar o status."
+            );
+
+            /*
+             * Consulta novamente o estado confirmado.
+             * Se a consulta falhar, ficará indisponível.
+             */
+
+            await loadServiceStatus();
+
+        } finally {
+
+            const confirmed =
+                isValidServiceStatus(
+                    lastConfirmedServiceStatus
+                );
+
+            if (saveButton) {
+
+                saveButton.textContent =
+                    "Salvar status";
+
+                saveButton.disabled =
+                    !confirmed;
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       POLLING
+    ===================================================== */
+
+    function startStatusPolling() {
+
+        stopStatusPolling();
+
+        if (!currentUser) {
+            return;
+        }
+
+        statusPollingTimer =
+            setInterval(async () => {
+
+                if (
+                    !currentUser ||
+                    document.hidden
+                ) {
+                    return;
+                }
+
+                await loadServiceStatus();
+
+            }, 30000);
+
+    }
+
+
+    function stopStatusPolling() {
+
+        if (statusPollingTimer) {
+
+            clearInterval(
+                statusPollingTimer
+            );
+
+            statusPollingTimer = null;
+
+        }
+
+    }
+
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (document.hidden) {
+
+                stopStatusPolling();
+                return;
+
+            }
+
+            if (currentUser) {
+
+                loadServiceStatus();
+                startStatusPolling();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    const mobileMenu =
+        document.getElementById(
+            "admin-menu-toggle"
+        );
+
+    if (mobileMenu) {
+
+        mobileMenu.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .getElementById("admin-sidebar")
+                    ?.classList.toggle("open");
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       EVENTOS
+    ===================================================== */
+
+    loginForm?.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+            const email =
+                document
+                    .getElementById("login-email")
+                    .value
+                    .trim();
+
+            const password =
+                document.getElementById(
+                    "login-password"
+                ).value;
+
+            await login(
+                email,
+                password
+            );
+
+        }
+    );
+
+
+    logoutButton?.addEventListener(
+        "click",
+        logout
+    );
+
+
+    document
+        .getElementById("settings-form")
+        ?.addEventListener(
+            "submit",
+            saveSettings
+        );
+
+
+    document
+        .getElementById("save-service-status")
+        ?.addEventListener(
+            "click",
+            saveServiceStatus
+        );
+
+
+    /*
+     * Se o administrador trocar a opção,
+     * mostramos que existe uma alteração pendente.
+     */
+
+    document
+        .querySelectorAll(
+            'input[name="service-status"]'
+        )
+        .forEach(radio => {
+
+            radio.addEventListener(
+                "change",
+                () => {
+
+                    if (
+                        !isValidServiceStatus(
+                            radio.value
+                        )
+                    ) {
+                        return;
+                    }
+
+                    const saveButton =
+                        document.getElementById(
+                            "save-service-status"
+                        );
+
+                    const statusMessage =
+                        document.getElementById(
+                            "service-status-save-status"
+                        );
+
+                    if (saveButton) {
+                        saveButton.disabled = false;
+                    }
+
+                    if (statusMessage) {
+
+                        statusMessage.textContent =
+                            "Alteração pendente. Clique em salvar.";
+
+                        statusMessage.className =
+                            "form-status service-status-save-status";
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       ATUALIZAR DASHBOARD
+    ===================================================== */
+
+    document
+        .getElementById("refresh-dashboard")
+        ?.addEventListener(
+            "click",
+            async () => {
+
+                if (!currentUser) {
+                    return;
+                }
+
+                const button =
+                    document.getElementById(
+                        "refresh-dashboard"
+                    );
+
+                if (button) {
+
+                    button.disabled = true;
+                    button.textContent =
+                        "Atualizando...";
+
+                }
+
+                try {
+
+                    await loadDashboard();
+
+                    const active =
+                        document.querySelector(
+                            ".admin-section.active"
+                        );
+
+                    if (active) {
+
+                        const sectionName =
+                            active.id.replace(
+                                "section-",
+                                ""
+                            );
+
+                        if (
+                            sectionName !==
+                            "dashboard"
+                        ) {
+                            showSection(sectionName);
+                        }
+
+                    }
+
+                    showToast(
+                        "Painel atualizado."
+                    );
+
+                } finally {
+
+                    if (button) {
+
+                        button.disabled = false;
+                        button.textContent =
+                            "↻ Atualizar";
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       AUTH
+    ===================================================== */
+
+    async function checkSession() {
+
+        if (!supabaseClient) {
+            return;
+        }
+
+        try {
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.getSession();
+
+            if (error) {
+                throw error;
+            }
+
+            if (
+                data?.session?.user
+            ) {
+
+                currentUser =
+                    data.session.user;
+
+                await openAdmin();
+
+            } else {
+
+                currentUser = null;
+
+                loginScreen.hidden = false;
+                adminApp.hidden = true;
+
+                stopStatusPolling();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Erro ao verificar sessão:",
+                error
+            );
+
+            currentUser = null;
+
+            loginScreen.hidden = false;
+            adminApp.hidden = true;
+
+            stopStatusPolling();
+
+        }
+
+    }
+
+
+    function watchAuth() {
+
+        if (!supabaseClient) {
+            return;
+        }
+
+        supabaseClient.auth.onAuthStateChange(
+            async (event, session) => {
+
+                console.log(
+                    "Supabase Auth:",
+                    event
+                );
+
+                if (
+                    event === "SIGNED_IN" &&
+                    session?.user
+                ) {
+
+                    currentUser =
+                        session.user;
+
+                    await openAdmin();
+
+                }
+
+                if (
+                    event === "SIGNED_OUT"
+                ) {
+
+                    currentUser = null;
+                    lastConfirmedServiceStatus = null;
+
+                    stopStatusPolling();
+
+                    adminApp.hidden = true;
+                    loginScreen.hidden = false;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       INICIALIZAÇÃO
+    ===================================================== */
+
+    async function init() {
+
+        console.log(
+            "Aureon Admin iniciando..."
+        );
+
+        const initialized =
+            initializeSupabase();
+
+        if (!initialized) {
+            return;
+        }
+
+        watchAuth();
+
+        await checkSession();
+
+        console.log(
+            "Aureon Admin carregado."
+        );
+
+    }
+
+
+    init();
+
+})();
+
+</script>
+
+</body>
+</html>

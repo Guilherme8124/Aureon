@@ -1,0 +1,6901 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Aureon — Ideias que se tornam tecnologia</title>
+
+  <meta
+    name="description"
+    content="Aureon — tecnologia, soluções digitais, inovação, educação financeira e ferramentas digitais."
+  >
+
+  <meta
+    name="theme-color"
+    content="#0a0a0a"
+  >
+
+  <meta
+    name="author"
+    content="Guilherme Lima Vieira"
+  >
+
+  <meta
+    name="robots"
+    content="index, follow"
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:title"
+    content="Aureon — Ideias que se tornam tecnologia"
+  >
+
+  <meta
+    property="og:description"
+    content="Tecnologia, soluções digitais, inovação, educação financeira e ferramentas digitais."
+  >
+
+  <meta
+    property="og:image"
+    content="assets/logo-aureon.png"
+  >
+
+  <meta
+    property="og:locale"
+    content="pt_BR"
+  >
+
+  <link
+    rel="icon"
+    href="assets/favicon.svg"
+    type="image/svg+xml"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+
+  <style>
+
+    /* =====================================================
+       VARIÁVEIS AUREON
+    ====================================================== */
+
+    :root {
+      --aureon-gold: #d4af37;
+      --aureon-gold-light: #f5d98a;
+      --aureon-gold-dark: #b8892e;
+
+      --aureon-black: #070707;
+
+      --aureon-glow:
+        rgba(212,175,55,.18);
+    }
+
+
+    /* =====================================================
+       BASE
+    ====================================================== */
+
+    body {
+      overflow-x: hidden;
+    }
+
+
+    /* =====================================================
+       GLOW DO CURSOR
+    ====================================================== */
+
+    #cursor-glow {
+
+      position: fixed;
+
+      width: 280px;
+      height: 280px;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 1;
+
+      opacity: 0;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(212,175,55,.10) 0%,
+          rgba(212,175,55,.045) 25%,
+          transparent 70%
+        );
+
+      transform:
+        translate(-50%, -50%);
+
+      transition:
+        opacity .3s ease;
+
+      mix-blend-mode: screen;
+    }
+
+
+    body.cursor-active #cursor-glow {
+      opacity: 1;
+    }
+
+
+    /* =====================================================
+       HERO
+    ====================================================== */
+
+    .hero::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      pointer-events: none;
+
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(212,175,55,.045),
+          transparent 40%
+        );
+
+      z-index: 0;
+    }
+
+
+    .hero-in {
+
+      position: relative;
+
+      z-index: 2;
+    }
+
+
+    /* =====================================================
+       CLIENT ACTIONS
+    ====================================================== */
+
+    .client-actions {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+
+    .client-login-btn,
+    .client-profile-btn {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      cursor: pointer;
+    }
+
+
+    .client-profile-btn {
+      display: none;
+    }
+
+
+    /* =====================================================
+       NOTIFICAÇÕES
+    ====================================================== */
+
+    .notification-button {
+
+      position: relative;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 42px;
+      height: 42px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid rgba(255,255,255,.12);
+
+      background:
+        rgba(255,255,255,.04);
+
+      color: inherit;
+
+      cursor: pointer;
+
+      transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+    }
+
+
+    .notification-button:hover {
+
+      transform:
+        translateY(-2px);
+
+      border-color:
+        rgba(212,175,55,.45);
+
+      background:
+        rgba(212,175,55,.08);
+    }
+
+
+    .notification-count {
+
+      position: absolute;
+
+      top: -3px;
+      right: -3px;
+
+      min-width: 18px;
+      height: 18px;
+
+      padding:
+        0 5px;
+
+      border-radius: 20px;
+
+      display: none;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background:
+        #d4af37;
+
+      color:
+        #000;
+
+      font-size: 10px;
+
+      font-weight: 800;
+    }
+
+
+    /* =====================================================
+       STATUS DE ATENDIMENTO
+    ====================================================== */
+
+    .service-status-enhanced {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      margin-top: 20px;
+
+      padding:
+        10px 15px;
+
+      border-radius: 999px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.04);
+
+      backdrop-filter:
+        blur(12px);
+
+      transition:
+        border-color .25s ease,
+        background .25s ease,
+        transform .25s ease;
+    }
+
+
+    .service-status-enhanced:hover {
+      transform:
+        translateY(-2px);
+    }
+
+
+    .service-status-enhanced .status-dot {
+
+      width: 10px;
+      height: 10px;
+
+      min-width: 10px;
+
+      border-radius: 50%;
+
+      background:
+        #777;
+
+      box-shadow:
+        0 0 10px
+        rgba(255,255,255,.2);
+
+      transition:
+        background .25s ease,
+        box-shadow .25s ease;
+    }
+
+
+    .service-status-enhanced.available {
+
+      border-color:
+        rgba(34,197,94,.22);
+    }
+
+
+    .service-status-enhanced.available .status-dot {
+
+      background:
+        #22c55e;
+
+      box-shadow:
+        0 0 14px
+        rgba(34,197,94,.65);
+    }
+
+
+    .service-status-enhanced.busy {
+
+      border-color:
+        rgba(234,179,8,.25);
+    }
+
+
+    .service-status-enhanced.busy .status-dot {
+
+      background:
+        #eab308;
+
+      box-shadow:
+        0 0 14px
+        rgba(234,179,8,.65);
+    }
+
+
+    .service-status-enhanced.offline {
+
+      border-color:
+        rgba(239,68,68,.25);
+    }
+
+
+    .service-status-enhanced.offline .status-dot {
+
+      background:
+        #ef4444;
+
+      box-shadow:
+        0 0 14px
+        rgba(239,68,68,.55);
+    }
+
+
+    .service-status-enhanced.loading .status-dot {
+
+      background:
+        #777;
+
+      box-shadow:
+        0 0 10px
+        rgba(255,255,255,.2);
+
+      animation:
+        statusPulse 1.2s infinite ease-in-out;
+    }
+
+
+    @keyframes statusPulse {
+
+      0%,
+      100% {
+
+        opacity: .45;
+
+        transform:
+          scale(.85);
+      }
+
+      50% {
+
+        opacity: 1;
+
+        transform:
+          scale(1);
+      }
+
+    }
+
+
+    .status-info {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 2px;
+
+      text-align: left;
+    }
+
+
+    .status-info strong {
+      font-size: 13px;
+    }
+
+
+    .status-info small {
+      opacity: .65;
+    }
+
+
+    /* =====================================================
+       ÁREA DO CLIENTE
+    ====================================================== */
+
+    .client-dashboard {
+      display: none;
+    }
+
+
+    .client-dashboard.active {
+      display: block;
+    }
+
+
+    .client-dashboard-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+
+      margin-top: 25px;
+    }
+
+
+    .client-stat {
+
+      padding: 22px;
+
+      border-radius: 18px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.04);
+
+      transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+    }
+
+
+    .client-stat:hover {
+
+      transform:
+        translateY(-5px);
+
+      border-color:
+        rgba(212,175,55,.25);
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.2);
+    }
+
+
+    .client-stat-icon {
+
+      font-size: 25px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .client-stat strong {
+
+      display: block;
+
+      font-size: 25px;
+
+      margin-bottom: 4px;
+    }
+
+
+    .client-stat span {
+
+      opacity: .65;
+
+      font-size: 13px;
+    }
+
+
+    .client-project {
+
+      margin-top: 25px;
+
+      padding: 25px;
+
+      border-radius: 20px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.035);
+    }
+
+
+    .project-progress {
+
+      height: 8px;
+
+      width: 100%;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      background:
+        rgba(255,255,255,.08);
+
+      margin:
+        15px 0;
+    }
+
+
+    .project-progress-bar {
+
+      width: 0%;
+
+      height: 100%;
+
+      background:
+        linear-gradient(
+          90deg,
+          #b8892e,
+          #f5d98a
+        );
+
+      border-radius: inherit;
+
+      transition:
+        width .5s ease;
+    }
+
+
+    .client-modal-actions {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 20px;
+    }
+
+
+    /* =====================================================
+       AUTENTICAÇÃO
+    ====================================================== */
+
+    .auth-modal-tabs {
+
+      display: flex;
+
+      gap: 8px;
+
+      margin-bottom: 20px;
+    }
+
+
+    .auth-tab {
+
+      flex: 1;
+
+      padding: 11px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        transparent;
+
+      color: inherit;
+
+      cursor: pointer;
+
+      transition:
+        .2s ease;
+    }
+
+
+    .auth-tab:hover {
+
+      border-color:
+        rgba(212,175,55,.35);
+    }
+
+
+    .auth-tab.active {
+
+      background:
+        rgba(212,175,55,.12);
+
+      border-color:
+        rgba(212,175,55,.4);
+    }
+
+
+    .auth-form {
+
+      display: none;
+
+      gap: 14px;
+    }
+
+
+    .auth-form.active {
+
+      display: grid;
+    }
+
+
+    .auth-form label {
+
+      display: grid;
+
+      gap: 7px;
+    }
+
+
+    .auth-form input {
+      width: 100%;
+    }
+
+
+    .auth-error,
+    .auth-success {
+
+      display: none;
+
+      padding: 10px;
+
+      border-radius: 10px;
+
+      font-size: 13px;
+
+      margin-top: 12px;
+    }
+
+
+    .auth-error {
+
+      background:
+        rgba(239,68,68,.1);
+
+      color:
+        #f87171;
+    }
+
+
+    .auth-success {
+
+      background:
+        rgba(34,197,94,.1);
+
+      color:
+        #4ade80;
+    }
+
+
+    /* =====================================================
+       NOTIFICAÇÕES
+    ====================================================== */
+
+    .notification-list {
+
+      display: grid;
+
+      gap: 10px;
+
+      margin-top: 20px;
+    }
+
+
+    .notification-item {
+
+      padding: 15px;
+
+      border-radius: 12px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.03);
+
+      transition:
+        .2s ease;
+    }
+
+
+    .notification-item:hover {
+
+      border-color:
+        rgba(212,175,55,.25);
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    .notification-item.unread {
+
+      border-color:
+        rgba(212,175,55,.35);
+
+      background:
+        rgba(212,175,55,.05);
+    }
+
+
+    /* =====================================================
+       SUPORTE
+    ====================================================== */
+
+    .support-options {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap: 12px;
+
+      margin-top: 20px;
+    }
+
+
+    .support-option {
+
+      padding: 18px;
+
+      border-radius: 15px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.03);
+
+      cursor: pointer;
+
+      transition:
+        .2s;
+
+      color: inherit;
+
+      min-height: 90px;
+    }
+
+
+    .support-option:hover {
+
+      transform:
+        translateY(-2px);
+
+      border-color:
+        rgba(212,175,55,.4);
+
+      background:
+        rgba(212,175,55,.06);
+    }
+
+
+    /* =====================================================
+       BOTÕES DA BIBLIOTECA
+    ====================================================== */
+
+    .library-card {
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+
+    .library-card button,
+    .library-card .text-button,
+    #library-grid .text-button {
+
+      display: inline-flex !important;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      width: auto;
+
+      min-width: 130px;
+
+      min-height: 44px;
+
+      margin-top: 14px;
+
+      padding:
+        11px 18px;
+
+      border:
+        1px solid rgba(212,175,55,.45) !important;
+
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5d98a,
+          #b8892e
+        ) !important;
+
+      color:
+        #111 !important;
+
+      font-family:
+        inherit;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      appearance: none;
+
+      -webkit-appearance: none;
+
+      box-shadow:
+        0 8px 25px
+        rgba(184,137,46,.16);
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+    }
+
+
+    .library-card button:hover,
+    .library-card .text-button:hover,
+    #library-grid .text-button:hover {
+
+      transform:
+        translateY(-2px);
+
+      filter:
+        brightness(1.06);
+
+      border-color:
+        rgba(245,217,138,.8) !important;
+
+      box-shadow:
+        0 12px 30px
+        rgba(184,137,46,.28);
+    }
+
+
+    .library-card button:active,
+    .library-card .text-button:active {
+
+      transform:
+        translateY(0);
+    }
+
+
+    .library-card button:focus-visible,
+    .library-card .text-button:focus-visible {
+
+      outline:
+        2px solid #f5d98a;
+
+      outline-offset:
+        3px;
+    }
+
+
+    /* =====================================================
+       FILTROS DA BIBLIOTECA
+    ====================================================== */
+
+    .library-filters {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin:
+        25px 0;
+    }
+
+
+    .library-filters .filter {
+
+      min-height: 40px;
+
+      padding:
+        9px 15px;
+
+      border-radius: 999px;
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color: inherit;
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+    }
+
+
+    .library-filters .filter:hover {
+
+      transform:
+        translateY(-1px);
+
+      border-color:
+        rgba(212,175,55,.3);
+    }
+
+
+    .library-filters .filter.active {
+
+      background:
+        rgba(212,175,55,.12);
+
+      border-color:
+        rgba(212,175,55,.45);
+
+      color:
+        #f5d98a;
+    }
+
+
+    /* =====================================================
+       LOADING
+    ====================================================== */
+
+    .loading-card {
+
+      position: relative;
+
+      overflow: hidden;
+    }
+
+
+    .loading-card::after {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      transform:
+        translateX(-100%);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.055),
+          transparent
+        );
+
+      animation:
+        skeletonShimmer 1.5s infinite;
+    }
+
+
+    @keyframes skeletonShimmer {
+
+      100% {
+        transform:
+          translateX(100%);
+      }
+
+    }
+
+
+    .loading-card .ic {
+
+      animation:
+        loadingRotate 1.3s infinite linear;
+
+      display: inline-block;
+    }
+
+
+    @keyframes loadingRotate {
+
+      to {
+        transform:
+          rotate(360deg);
+      }
+
+    }
+
+
+    .empty-state {
+
+      margin-top: 20px;
+
+      padding: 35px;
+
+      text-align: center;
+
+      border:
+        1px dashed rgba(255,255,255,.12);
+
+      border-radius: 18px;
+
+      background:
+        rgba(255,255,255,.025);
+    }
+
+
+    .empty-state[hidden] {
+      display: none;
+    }
+
+
+    .empty-state .ic {
+
+      display: block;
+
+      font-size: 32px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .data-error {
+
+      border-color:
+        rgba(239,68,68,.25);
+
+      background:
+        rgba(239,68,68,.045);
+    }
+
+
+    .data-error .ic {
+      color:
+        #f87171;
+    }
+
+
+    /* =====================================================
+       CARDS INTERATIVOS
+    ====================================================== */
+
+    .service-card,
+    .tool-card,
+    .steps .card,
+    #projetos .card,
+    #novidades .card,
+    #diferenciais .card {
+
+      transition:
+        transform .28s ease,
+        border-color .28s ease,
+        box-shadow .28s ease;
+
+      will-change:
+        transform;
+    }
+
+
+    .service-card:hover,
+    .tool-card:hover,
+    .steps .card:hover,
+    #projetos .card:hover,
+    #novidades .card:hover,
+    #diferenciais .card:hover {
+
+      transform:
+        translateY(-6px);
+
+      border-color:
+        rgba(212,175,55,.24);
+
+      box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.22),
+        0 0 35px
+        rgba(212,175,55,.035);
+    }
+
+
+    .service-card .ic,
+    .tool-card .ic {
+
+      transition:
+        transform .3s ease,
+        filter .3s ease;
+    }
+
+
+    .service-card:hover .ic,
+    .tool-card:hover .ic {
+
+      transform:
+        scale(1.12);
+
+      filter:
+        drop-shadow(
+          0 0 10px
+          rgba(212,175,55,.3)
+        );
+    }
+
+
+    /* =====================================================
+       FERRAMENTAS FINANCEIRAS
+    ====================================================== */
+
+    .calculator-tools .tool-card {
+
+      display: flex;
+
+      flex-direction: column;
+    }
+
+
+    .calculator-tools .tool-card .text-button,
+    .tool-card .text-button,
+    [data-calculator] {
+
+      display: inline-flex !important;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 100%;
+
+      min-height: 44px;
+
+      margin-top: auto;
+
+      padding:
+        11px 18px;
+
+      border:
+        1px solid rgba(212,175,55,.42) !important;
+
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(245,217,138,.98),
+          rgba(184,137,46,.98)
+        ) !important;
+
+      color:
+        #111 !important;
+
+      font-family:
+        inherit;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      line-height: 1;
+
+      text-align: center;
+
+      cursor: pointer;
+
+      appearance: none !important;
+
+      -webkit-appearance: none !important;
+
+      box-shadow:
+        0 8px 22px
+        rgba(184,137,46,.14);
+
+      transition:
+        transform .2s ease,
+        filter .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+    }
+
+
+    .tool-card .text-button:hover,
+    [data-calculator]:hover {
+
+      transform:
+        translateY(-2px);
+
+      filter:
+        brightness(1.07);
+
+      border-color:
+        rgba(245,217,138,.85) !important;
+
+      box-shadow:
+        0 12px 30px
+        rgba(184,137,46,.26);
+    }
+
+
+    .tool-card .text-button:active,
+    [data-calculator]:active {
+
+      transform:
+        translateY(0);
+    }
+
+
+    .tool-card .text-button:focus-visible,
+    [data-calculator]:focus-visible {
+
+      outline:
+        2px solid #f5d98a;
+
+      outline-offset:
+        3px;
+    }
+
+
+    /* =====================================================
+       AUREON AI — CHAT
+    ====================================================== */
+
+    .ai-chat {
+
+      position: fixed;
+
+      right: 20px;
+
+      bottom: 90px;
+
+      width:
+        min(
+          420px,
+          calc(100vw - 28px)
+        );
+
+      height:
+        min(
+          560px,
+          70vh
+        );
+
+      max-height:
+        70vh;
+
+      min-height:
+        0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      overflow: hidden;
+
+      border:
+        1px solid rgba(212,175,55,.18);
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(18,18,18,.98),
+          rgba(9,9,9,.98)
+        );
+
+      box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.45),
+        0 0 40px
+        rgba(212,175,55,.06);
+
+      z-index: 9998;
+
+      box-sizing: border-box;
+    }
+
+
+    .ai-chat-header {
+
+      flex:
+        0 0 auto;
+
+      min-height:
+        64px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding:
+        12px 15px;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(255,255,255,.025);
+
+      backdrop-filter:
+        blur(14px);
+    }
+
+
+    .ai-chat-header > div {
+
+      min-width: 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 3px;
+    }
+
+
+    .ai-chat-header strong {
+
+      font-size: 14px;
+
+      line-height: 1.2;
+    }
+
+
+    .ai-chat-header small {
+
+      font-size: 11px;
+
+      opacity: .58;
+    }
+
+
+    #close-ai {
+
+      flex:
+        0 0 auto;
+
+      width: 36px;
+      height: 36px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,.04);
+
+      color: inherit;
+
+      font-size: 21px;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+    }
+
+
+    #close-ai:hover {
+
+      background:
+        rgba(212,175,55,.10);
+
+      border-color:
+        rgba(212,175,55,.35);
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .ai-messages {
+
+      flex:
+        1 1 auto;
+
+      min-height:
+        0;
+
+      overflow-y:
+        auto;
+
+      overflow-x:
+        hidden;
+
+      padding:
+        14px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        10px;
+
+      scroll-behavior:
+        smooth;
+
+      overscroll-behavior:
+        contain;
+
+      scrollbar-width:
+        thin;
+    }
+
+
+    .ai-message {
+
+      width:
+        fit-content;
+
+      max-width:
+        88%;
+
+      word-wrap:
+        break-word;
+
+      overflow-wrap:
+        anywhere;
+
+      padding:
+        11px 13px;
+
+      border-radius:
+        14px;
+
+      line-height:
+        1.5;
+
+      font-size:
+        13px;
+    }
+
+
+    .ai-message.bot {
+
+      align-self:
+        flex-start;
+
+      background:
+        rgba(255,255,255,.055);
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      animation:
+        aiMessageIn .25s ease both;
+    }
+
+
+    .ai-message.user {
+
+      align-self:
+        flex-end;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5d98a,
+          #b8892e
+        );
+
+      color:
+        #111;
+
+      border:
+        0;
+
+      font-weight:
+        600;
+    }
+
+
+    @keyframes aiMessageIn {
+
+      from {
+
+        opacity:
+          0;
+
+        transform:
+          translateY(6px);
+      }
+
+      to {
+
+        opacity:
+          1;
+
+        transform:
+          translateY(0);
+      }
+
+    }
+
+
+    .ai-input {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      flex:
+        0 0 auto;
+
+      padding:
+        10px;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+
+      background:
+        rgba(0,0,0,.20);
+
+      box-sizing:
+        border-box;
+    }
+
+
+    .ai-input input {
+
+      flex:
+        1 1 auto;
+
+      min-width:
+        0;
+
+      width:
+        auto;
+
+      height:
+        46px;
+
+      padding:
+        0 13px;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(255,255,255,.045);
+
+      color:
+        inherit;
+
+      outline:
+        none;
+
+      box-sizing:
+        border-box;
+    }
+
+
+    .ai-input input:focus {
+
+      border-color:
+        rgba(212,175,55,.45);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(212,175,55,.07);
+    }
+
+
+    .ai-input button {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        46px;
+
+      min-width:
+        46px;
+
+      height:
+        46px;
+
+      min-height:
+        46px;
+
+      flex:
+        0 0 46px;
+
+      padding:
+        0;
+
+      border:
+        0;
+
+      border-radius:
+        12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #f5d98a,
+          #b8892e
+        );
+
+      color:
+        #111;
+
+      font-size:
+        17px;
+
+      font-weight:
+        900;
+
+      cursor:
+        pointer;
+
+      box-shadow:
+        0 8px 22px
+        rgba(184,137,46,.20);
+
+      transition:
+        transform .2s ease,
+        filter .2s ease,
+        box-shadow .2s ease;
+    }
+
+
+    .ai-input button:hover {
+
+      transform:
+        translateY(-2px);
+
+      filter:
+        brightness(1.06);
+
+      box-shadow:
+        0 12px 28px
+        rgba(184,137,46,.30);
+    }
+
+
+    .ai-input button:active {
+
+      transform:
+        translateY(0);
+    }
+
+
+    .ai-input button:disabled {
+
+      opacity:
+        .5;
+
+      cursor:
+        not-allowed;
+
+      transform:
+        none;
+
+      filter:
+        none;
+
+      box-shadow:
+        none;
+    }
+
+
+    .ai-input button:focus-visible {
+
+      outline:
+        2px solid #f5d98a;
+
+      outline-offset:
+        3px;
+    }
+
+
+    /* =====================================================
+       AI STATUS
+    ====================================================== */
+
+    .ai-status {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      width:
+        fit-content;
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        .08em;
+
+      transition:
+        color .2s ease,
+        opacity .2s ease;
+    }
+
+
+    .ai-status::before {
+
+      content:
+        "";
+
+      width:
+        7px;
+
+      height:
+        7px;
+
+      min-width:
+        7px;
+
+      border-radius:
+        50%;
+
+      background:
+        #777;
+
+      box-shadow:
+        none;
+    }
+
+
+    .ai-status.online {
+
+      color:
+        #4ade80;
+    }
+
+
+    .ai-status.online::before {
+
+      background:
+        #22c55e;
+
+      box-shadow:
+        0 0 10px
+        rgba(34,197,94,.6);
+
+      animation:
+        aiPulse 1.8s infinite ease-in-out;
+    }
+
+
+    .ai-status.checking {
+
+      color:
+        #eab308;
+    }
+
+
+    .ai-status.checking::before {
+
+      background:
+        #eab308;
+
+      box-shadow:
+        0 0 9px
+        rgba(234,179,8,.5);
+
+      animation:
+        aiPulse 1.2s infinite ease-in-out;
+    }
+
+
+    .ai-status.offline,
+    .ai-status.error {
+
+      color:
+        #f87171;
+    }
+
+
+    .ai-status.offline::before,
+    .ai-status.error::before {
+
+      background:
+        #ef4444;
+
+      box-shadow:
+        0 0 9px
+        rgba(239,68,68,.45);
+
+      animation:
+        none;
+    }
+
+
+    @keyframes aiPulse {
+
+      0%,
+      100% {
+
+        opacity:
+          .55;
+
+        transform:
+          scale(.85);
+      }
+
+      50% {
+
+        opacity:
+          1;
+
+        transform:
+          scale(1.15);
+      }
+
+    }
+
+
+    /* =====================================================
+       AI BOX
+    ====================================================== */
+
+    .ai-box {
+
+      position:
+        relative;
+
+      overflow:
+        hidden;
+    }
+
+
+    .ai-box::before {
+
+      content:
+        "";
+
+      position:
+        absolute;
+
+      width:
+        220px;
+
+      height:
+        220px;
+
+      top:
+        -100px;
+
+      right:
+        -80px;
+
+      border-radius:
+        50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(212,175,55,.14),
+          transparent 70%
+        );
+
+      pointer-events:
+        none;
+    }
+
+
+    .ai-icon {
+
+      position:
+        relative;
+
+      animation:
+        aiFloat 3.5s ease-in-out infinite;
+    }
+
+
+    @keyframes aiFloat {
+
+      0%,
+      100% {
+
+        transform:
+          translateY(0);
+      }
+
+      50% {
+
+        transform:
+          translateY(-5px);
+      }
+
+    }
+
+
+    /* =====================================================
+       CTA
+    ====================================================== */
+
+    .cta-box {
+
+      position:
+        relative;
+
+      overflow:
+        hidden;
+    }
+
+
+    .cta-box::after {
+
+      content:
+        "";
+
+      position:
+        absolute;
+
+      width:
+        260px;
+
+      height:
+        260px;
+
+      right:
+        -100px;
+
+      bottom:
+        -160px;
+
+      border-radius:
+        50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(212,175,55,.12),
+          transparent 70%
+        );
+
+      pointer-events:
+        none;
+    }
+
+
+    .btn {
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    .btn:active {
+
+      transform:
+        translateY(0);
+    }
+
+
+    .text-button {
+      cursor: pointer;
+    }
+
+
+    /* =====================================================
+       ADMIN
+    ====================================================== */
+
+    .admin-link {
+
+      transition:
+        color .2s ease,
+        opacity .2s ease;
+    }
+
+
+    .admin-link:hover {
+
+      color:
+        #f5d98a;
+
+      opacity:
+        1;
+    }
+
+
+    /* =====================================================
+       RESPONSIVIDADE
+    ====================================================== */
+
+    @media(max-width:1100px) {
+
+      #menu {
+        gap:
+          10px;
+      }
+
+
+      .client-dashboard-grid {
+
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+    }
+
+
+    @media(max-width:900px) {
+
+      .client-dashboard-grid {
+
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      #cursor-glow {
+
+        display:
+          none;
+      }
+
+    }
+
+
+    @media(max-width:700px) {
+
+      .library-filters {
+
+        overflow-x:
+          auto;
+
+        flex-wrap:
+          nowrap;
+
+        padding-bottom:
+          5px;
+
+        scrollbar-width:
+          thin;
+      }
+
+
+      .library-filters .filter {
+
+        flex:
+          0 0 auto;
+      }
+
+    }
+
+
+    /* =====================================================
+       CHAT — TABLETS
+    ====================================================== */
+
+    @media(max-width:700px) {
+
+      .ai-chat {
+
+        right:
+          12px;
+
+        bottom:
+          80px;
+
+        width:
+          calc(100vw - 24px);
+
+        height:
+          min(
+            560px,
+            70vh
+          );
+
+        max-height:
+          70vh;
+
+        min-height:
+          0;
+
+        border-radius:
+          18px;
+      }
+
+
+      .ai-chat-header {
+
+        min-height:
+          60px;
+
+        padding:
+          10px 13px;
+      }
+
+
+      .ai-messages {
+
+        padding:
+          12px;
+      }
+
+    }
+
+
+    /* =====================================================
+       CHAT — SMARTPHONES
+    ====================================================== */
+
+    @media(max-width:600px) {
+
+      .client-dashboard-grid,
+      .support-options {
+
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .client-login-btn span,
+      .client-profile-btn span {
+
+        display:
+          none;
+      }
+
+
+      .service-status-enhanced {
+
+        max-width:
+          100%;
+      }
+
+
+      .ai-chat {
+
+        left:
+          10px;
+
+        right:
+          10px;
+
+        bottom:
+          max(
+            76px,
+            env(safe-area-inset-bottom)
+          );
+
+        width:
+          auto;
+
+        height:
+          min(
+            560px,
+            70vh
+          );
+
+        max-height:
+          70vh;
+
+        min-height:
+          0;
+
+        border-radius:
+          18px;
+      }
+
+
+      .ai-chat-header {
+
+        min-height:
+          58px;
+
+        padding:
+          10px 12px;
+      }
+
+
+      .ai-messages {
+
+        padding:
+          12px;
+
+        gap:
+          8px;
+      }
+
+
+      .ai-message {
+
+        max-width:
+          90%;
+
+        padding:
+          10px 12px;
+
+        font-size:
+          13px;
+      }
+
+
+      .ai-input {
+
+        padding:
+          8px;
+
+        gap:
+          7px;
+      }
+
+
+      .ai-input input {
+
+        height:
+          44px;
+
+        font-size:
+          14px;
+      }
+
+
+      .ai-input button {
+
+        width:
+          44px;
+
+        min-width:
+          44px;
+
+        max-width:
+          44px;
+
+        height:
+          44px;
+
+        min-height:
+          44px;
+
+        flex-basis:
+          44px;
+      }
+
+
+      .library-card button,
+      .library-card .text-button,
+      #library-grid .text-button {
+
+        width:
+          100%;
+      }
+
+
+      .client-modal-actions {
+
+        flex-direction:
+          column;
+      }
+
+
+      .client-modal-actions .btn {
+
+        width:
+          100%;
+      }
+
+    }
+
+
+    /* =====================================================
+       SMARTPHONES PEQUENOS — 375 / 390 PX
+    ====================================================== */
+
+    @media(max-width:390px) {
+
+      .ai-chat {
+
+        left:
+          7px;
+
+        right:
+          7px;
+
+        bottom:
+          72px;
+
+        width:
+          calc(100vw - 14px);
+
+        height:
+          68vh;
+
+        max-height:
+          68vh;
+
+        border-radius:
+          16px;
+      }
+
+
+      .ai-chat-header {
+
+        min-height:
+          54px;
+
+        padding:
+          8px 10px;
+      }
+
+
+      .ai-chat-header strong {
+
+        font-size:
+          13px;
+      }
+
+
+      .ai-chat-header small {
+
+        font-size:
+          10px;
+      }
+
+
+      #close-ai {
+
+        width:
+          32px;
+
+        height:
+          32px;
+
+        font-size:
+          19px;
+      }
+
+
+      .ai-messages {
+
+        padding:
+          9px;
+      }
+
+
+      .ai-message {
+
+        max-width:
+          92%;
+
+        padding:
+          9px 10px;
+
+        font-size:
+          12.5px;
+
+        line-height:
+          1.45;
+      }
+
+
+      .ai-input {
+
+        padding:
+          7px;
+      }
+
+
+      .ai-input input {
+
+        height:
+          42px;
+
+        font-size:
+          13px;
+
+        padding:
+          0 10px;
+      }
+
+
+      .ai-input button {
+
+        width:
+          42px;
+
+        min-width:
+          42px;
+
+        height:
+          42px;
+
+        min-height:
+          42px;
+
+        flex-basis:
+          42px;
+      }
+
+    }
+
+
+    /* =====================================================
+       REDUÇÃO DE MOVIMENTO
+    ====================================================== */
+
+    @media(prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        scroll-behavior:
+          auto !important;
+
+        animation-duration:
+          .01ms !important;
+
+        animation-iteration-count:
+          1 !important;
+
+        transition-duration:
+          .01ms !important;
+      }
+
+
+      #cursor-glow {
+
+        display:
+          none !important;
+      }
+
+    }
+
+  </style>
+
+
+  <!-- =====================================================
+       TEMA
+  ====================================================== -->
+
+  <script>
+
+    (() => {
+
+      try {
+
+        const savedTheme =
+          localStorage.getItem(
+            "aureon-theme"
+          );
+
+        document.documentElement.dataset.theme =
+          savedTheme || "dark";
+
+      } catch {
+
+        document.documentElement.dataset.theme =
+          "dark";
+      }
+
+    })();
+
+  </script>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       GLOW
+  ====================================================== -->
+
+  <div
+    id="cursor-glow"
+    aria-hidden="true"
+  ></div>
+
+
+  <!-- =====================================================
+       LOGO SVG
+  ====================================================== -->
+
+  <svg
+    width="0"
+    height="0"
+    style="position:absolute"
+    aria-hidden="true"
+    focusable="false"
+  >
+
+    <defs>
+
+      <linearGradient
+        id="gold"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
+
+        <stop
+          offset="0%"
+          stop-color="#f5d98a"
+        />
+
+        <stop
+          offset="100%"
+          stop-color="#b8892e"
+        />
+
+      </linearGradient>
+
+
+      <symbol
+        id="logo"
+        viewBox="0 0 100 100"
+      >
+
+        <path
+          d="M50 8 L86 92 H70 L50 45 L30 92 H14 Z"
+          fill="url(#gold)"
+        />
+
+
+        <path
+          d="M24 70 Q56 48 88 54"
+          stroke="url(#gold)"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+        />
+
+      </symbol>
+
+    </defs>
+
+  </svg>
+
+
+  <!-- =====================================================
+       LOADER
+  ====================================================== -->
+
+  <div
+    id="loader"
+    role="status"
+    aria-live="polite"
+    aria-label="Carregando Aureon"
+  >
+
+    <div class="ld">
+
+      <svg
+        class="ld-logo"
+        viewBox="0 0 100 100"
+        aria-hidden="true"
+      >
+
+        <use href="#logo"></use>
+
+      </svg>
+
+
+      <h1 class="ld-name">
+        AUREON
+      </h1>
+
+
+      <p>
+        Ideias que se tornam tecnologia.
+      </p>
+
+
+      <div
+        class="bar"
+        role="progressbar"
+        aria-label="Carregando site"
+      >
+
+        <i></i>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <header id="nav">
+
+    <div class="nav-inner">
+
+      <a
+        href="#inicio"
+        class="brand"
+        aria-label="Aureon — Página inicial"
+      >
+
+        <svg
+          viewBox="0 0 100 100"
+          aria-hidden="true"
+        >
+
+          <use href="#logo"></use>
+
+        </svg>
+
+
+        <span>
+          AUREON
+        </span>
+
+      </a>
+
+
+      <nav
+        id="menu"
+        aria-label="Navegação principal"
+      >
+
+        <a
+          href="#inicio"
+          class="active"
+        >
+          Início
+        </a>
+
+
+        <a href="#sobre">
+          Sobre
+        </a>
+
+
+        <a href="#servicos">
+          Serviços
+        </a>
+
+
+        <a href="#processo">
+          Processo
+        </a>
+
+
+        <a href="#aureon-ai">
+          Aureon AI
+        </a>
+
+
+        <a href="#biblioteca">
+          Biblioteca
+        </a>
+
+
+        <a href="#calculadoras">
+          Calculadoras
+        </a>
+
+
+        <a href="#investir">
+          Educação Financeira
+        </a>
+
+
+        <a href="#projetos">
+          Projetos
+        </a>
+
+
+        <a href="#novidades">
+          Novidades
+        </a>
+
+
+        <a href="#diferenciais">
+          Diferenciais
+        </a>
+
+
+        <a href="#contato">
+          Contato
+        </a>
+
+      </nav>
+
+
+      <div class="actions">
+
+        <button
+          id="theme"
+          type="button"
+          aria-label="Ativar modo claro"
+          title="Alternar tema"
+        >
+          🌙
+        </button>
+
+
+        <button
+          id="client-notifications"
+          class="notification-button"
+          type="button"
+          aria-label="Notificações"
+          title="Notificações"
+        >
+
+          🔔
+
+
+          <span
+            id="notification-count"
+            class="notification-count"
+          >
+            0
+          </span>
+
+        </button>
+
+
+        <button
+          id="client-login"
+          class="btn sm client-login-btn"
+          type="button"
+        >
+
+          👤
+
+
+          <span>
+            Entrar
+          </span>
+
+        </button>
+
+
+        <button
+          id="client-profile"
+          class="btn sm client-profile-btn"
+          type="button"
+        >
+
+          👤
+
+
+          <span id="client-name-header">
+            Minha conta
+          </span>
+
+        </button>
+
+
+        <a
+          class="btn sm"
+          href="https://wa.me/5599984883104"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Falar com a Aureon pelo WhatsApp"
+        >
+          Fale conosco
+        </a>
+
+
+        <button
+          id="burger"
+          type="button"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
+
+  <main id="conteudo">
+
+
+    <!-- ===================================================
+         HERO
+    ==================================================== -->
+
+    <section
+      id="inicio"
+      class="hero"
+      aria-labelledby="hero-title"
+    >
+
+      <canvas
+        id="bg"
+        aria-hidden="true"
+      ></canvas>
+
+
+      <div
+        class="hero-glow"
+        aria-hidden="true"
+      ></div>
+
+
+      <div class="wrap hero-in">
+
+        <p class="eyebrow">
+          Ideias que se tornam tecnologia.
+        </p>
+
+
+        <h1 id="hero-title">
+
+          Tecnologia que transforma
+          <em>ideias</em> em soluções.
+
+        </h1>
+
+
+        <p class="lead">
+
+          A Aureon desenvolve soluções digitais modernas
+          para transformar ideias, processos e negócios.
+
+        </p>
+
+
+        <div class="cta-row">
+
+          <a
+            class="btn"
+            href="#servicos"
+          >
+            Conheça nossas soluções
+          </a>
+
+
+          <a
+            class="btn ghost"
+            href="https://wa.me/5599984883104"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Fale pelo WhatsApp
+          </a>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div
+          id="service-status"
+          class="service-status service-status-enhanced loading"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          data-status-source="supabase"
+          data-status="loading"
+        >
+
+          <span
+            class="status-dot"
+            aria-hidden="true"
+          ></span>
+
+
+          <span class="status-info">
+
+            <strong id="service-status-title">
+              Verificando atendimento...
+            </strong>
+
+
+            <small id="service-status-message">
+              Consultando disponibilidade da equipe.
+            </small>
+
+          </span>
+
+        </div>
+
+
+        <noscript>
+
+          <div
+            class="service-status service-status-enhanced offline"
+            role="status"
+          >
+
+            <span
+              class="status-dot"
+              aria-hidden="true"
+            ></span>
+
+
+            <span class="status-info">
+
+              <strong>
+                Atendimento indisponível
+              </strong>
+
+
+              <small>
+                Ative o JavaScript para consultar a disponibilidade em tempo real.
+              </small>
+
+            </span>
+
+          </div>
+
+        </noscript>
+
+
+        <div
+          class="hero-scroll"
+          aria-hidden="true"
+        >
+
+          <span>
+            Role para explorar
+          </span>
+
+
+          <span class="arrow">
+            ↓
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         ÁREA DO CLIENTE
+    ==================================================== -->
+
+    <section
+      id="area-cliente"
+      class="wrap reveal client-dashboard"
+      aria-labelledby="cliente-title"
+    >
+
+      <p class="tag">
+        Área do cliente
+      </p>
+
+
+      <h2 id="cliente-title">
+
+        Olá,
+        <span id="client-welcome-name">
+          cliente
+        </span>!
+
+        👋
+
+      </h2>
+
+
+      <p class="sub">
+
+        Acompanhe seus projetos, mensagens,
+        orçamentos e notificações.
+
+      </p>
+
+
+      <div class="client-dashboard-grid">
+
+        <article class="client-stat">
+
+          <div class="client-stat-icon">
+            📋
+          </div>
+
+
+          <strong id="client-quotes-count">
+            0
+          </strong>
+
+
+          <span>
+            Orçamentos
+          </span>
+
+        </article>
+
+
+        <article class="client-stat">
+
+          <div class="client-stat-icon">
+            📁
+          </div>
+
+
+          <strong id="client-projects-count">
+            0
+          </strong>
+
+
+          <span>
+            Projetos
+          </span>
+
+        </article>
+
+
+        <article class="client-stat">
+
+          <div class="client-stat-icon">
+            💬
+          </div>
+
+
+          <strong id="client-messages-count">
+            0
+          </strong>
+
+
+          <span>
+            Mensagens
+          </span>
+
+        </article>
+
+
+        <article class="client-stat">
+
+          <div class="client-stat-icon">
+            🔔
+          </div>
+
+
+          <strong id="client-notifications-count">
+            0
+          </strong>
+
+
+          <span>
+            Notificações
+          </span>
+
+        </article>
+
+      </div>
+
+
+      <div
+        id="client-project"
+        class="client-project"
+      >
+
+        <span class="tag">
+          Projeto atual
+        </span>
+
+
+        <h3 id="client-project-title">
+          Nenhum projeto em andamento
+        </h3>
+
+
+        <p id="client-project-description">
+
+          Quando você tiver um projeto com a Aureon,
+          ele aparecerá aqui.
+
+        </p>
+
+
+        <div class="project-progress">
+
+          <div
+            id="client-project-progress"
+            class="project-progress-bar"
+          ></div>
+
+        </div>
+
+
+        <small id="client-project-progress-text">
+          0% concluído
+        </small>
+
+      </div>
+
+
+      <div class="client-modal-actions">
+
+        <button
+          class="btn"
+          type="button"
+          id="client-open-projects"
+        >
+          📁 Meus projetos
+        </button>
+
+
+        <button
+          class="btn ghost"
+          type="button"
+          id="client-open-messages"
+        >
+          💬 Minhas mensagens
+        </button>
+
+
+        <button
+          class="btn ghost"
+          type="button"
+          id="client-open-profile"
+        >
+          👤 Meu perfil
+        </button>
+
+
+        <button
+          class="btn ghost"
+          type="button"
+          id="client-logout"
+        >
+          🚪 Sair
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         SOBRE
+    ==================================================== -->
+
+    <section
+      id="sobre"
+      class="wrap split reveal"
+      aria-labelledby="sobre-title"
+    >
+
+      <div>
+
+        <p class="tag">
+          Sobre
+        </p>
+
+
+        <h2 id="sobre-title">
+          Sobre a Aureon
+        </h2>
+
+
+        <p>
+          A Aureon nasceu com o propósito de transformar
+          ideias em soluções digitais.
+        </p>
+
+
+        <p>
+
+          Unimos tecnologia, criatividade e estratégia para
+          desenvolver experiências e ferramentas que tornam
+          processos mais simples, inteligentes e eficientes.
+
+        </p>
+
+      </div>
+
+
+      <ul
+        class="chips"
+        aria-label="Características da Aureon"
+      >
+
+        <li>
+          Tecnologia
+        </li>
+
+        <li>
+          Inovação
+        </li>
+
+        <li>
+          Desenvolvimento
+        </li>
+
+        <li>
+          Criatividade
+        </li>
+
+      </ul>
+
+    </section>
+
+
+    <!-- ===================================================
+         SERVIÇOS
+    ==================================================== -->
+
+    <section
+      id="servicos"
+      class="wrap reveal"
+      aria-labelledby="servicos-title"
+    >
+
+      <p class="tag">
+        Serviços
+      </p>
+
+
+      <h2 id="servicos-title">
+        O que fazemos
+      </h2>
+
+
+      <p class="sub">
+        Soluções digitais pensadas para diferentes necessidades.
+      </p>
+
+
+      <div
+        id="services-grid"
+        class="grid g5"
+      >
+
+        <article
+          class="card service-card"
+          data-service="sites"
+        >
+
+          <span class="ic">
+            🌐
+          </span>
+
+
+          <h3>
+            Desenvolvimento de Sites
+          </h3>
+
+
+          <p>
+            Sites modernos, rápidos, responsivos e personalizados.
+          </p>
+
+        </article>
+
+
+        <article
+          class="card service-card"
+          data-service="sistemas"
+        >
+
+          <span class="ic">
+            🧩
+          </span>
+
+
+          <h3>
+            Sistemas Web
+          </h3>
+
+
+          <p>
+            Sistemas desenvolvidos para facilitar processos e operações.
+          </p>
+
+        </article>
+
+
+        <article
+          class="card service-card"
+          data-service="automacao"
+        >
+
+          <span class="ic">
+            ⚙️
+          </span>
+
+
+          <h3>
+            Automação de Processos
+          </h3>
+
+
+          <p>
+            Soluções para reduzir tarefas repetitivas e aumentar a eficiência.
+          </p>
+
+        </article>
+
+
+        <article
+          class="card service-card"
+          data-service="personalizado"
+        >
+
+          <span class="ic">
+            🎯
+          </span>
+
+
+          <h3>
+            Soluções Personalizadas
+          </h3>
+
+
+          <p>
+            Projetos desenvolvidos de acordo com as necessidades de cada cliente.
+          </p>
+
+        </article>
+
+
+        <article
+          class="card service-card"
+          data-service="consultoria"
+        >
+
+          <span class="ic">
+            💡
+          </span>
+
+
+          <h3>
+            Consultoria em Tecnologia
+          </h3>
+
+
+          <p>
+            Orientação para pessoas e empresas que desejam utilizar melhor a tecnologia.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         PROCESSO
+    ==================================================== -->
+
+    <section
+      id="processo"
+      class="wrap reveal"
+      aria-labelledby="processo-title"
+    >
+
+      <p class="tag">
+        Processo
+      </p>
+
+
+      <h2 id="processo-title">
+        Como trabalhamos
+      </h2>
+
+
+      <p class="sub">
+        Da ideia ao desenvolvimento da solução.
+      </p>
+
+
+      <div class="grid g4 steps">
+
+        <article class="card">
+
+          <span class="card-number">
+            01
+          </span>
+
+
+          <h3>
+            Você apresenta a ideia
+          </h3>
+
+
+          <p>
+            Entendemos o que você precisa e qual problema deseja resolver.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            02
+          </span>
+
+
+          <h3>
+            Entendemos a necessidade
+          </h3>
+
+
+          <p>
+            Analisamos objetivos, funcionalidades e possibilidades.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            03
+          </span>
+
+
+          <h3>
+            Desenvolvemos
+          </h3>
+
+
+          <p>
+            Transformamos a ideia em uma solução digital.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            04
+          </span>
+
+
+          <h3>
+            Entregamos e aprimoramos
+          </h3>
+
+
+          <p>
+            A solução pode evoluir conforme novas necessidades surgirem.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         AUREON AI
+    ==================================================== -->
+
+    <section
+      id="aureon-ai"
+      class="wrap reveal"
+      aria-labelledby="ai-title"
+    >
+
+      <p class="tag">
+        Inteligência artificial
+      </p>
+
+
+      <div class="ai-box">
+
+        <div class="ai-icon">
+          🤖
+        </div>
+
+
+        <div class="ai-content">
+
+          <span
+            id="ai-online-status"
+            class="ai-status checking"
+            data-ai-status="checking"
+            aria-live="polite"
+          >
+            VERIFICANDO
+          </span>
+
+
+          <h2 id="ai-title">
+            Aureon AI
+          </h2>
+
+
+          <p>
+
+            Converse com o assistente virtual da Aureon para
+            conhecer nossos serviços, ferramentas, conteúdos
+            e tirar dúvidas.
+
+          </p>
+
+
+          <button
+            class="btn"
+            type="button"
+            id="open-ai"
+          >
+            Conversar com a Aureon AI
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BIBLIOTECA
+    ==================================================== -->
+
+    <section
+      id="biblioteca"
+      class="wrap reveal"
+      aria-labelledby="biblioteca-title"
+    >
+
+      <p class="tag">
+        Conteúdo
+      </p>
+
+
+      <h2 id="biblioteca-title">
+        Biblioteca Aureon
+      </h2>
+
+
+      <p class="sub">
+
+        Conteúdos para aprender mais sobre tecnologia,
+        finanças e investimentos.
+
+      </p>
+
+
+      <div
+        class="library-filters"
+        role="group"
+        aria-label="Filtros da biblioteca"
+      >
+
+        <button
+          type="button"
+          class="filter active"
+          data-filter="todos"
+        >
+          Todos
+        </button>
+
+
+        <button
+          type="button"
+          class="filter"
+          data-filter="investimentos"
+        >
+          Investimentos
+        </button>
+
+
+        <button
+          type="button"
+          class="filter"
+          data-filter="tecnologia"
+        >
+          Tecnologia
+        </button>
+
+
+        <button
+          type="button"
+          class="filter"
+          data-filter="financas"
+        >
+          Finanças
+        </button>
+
+
+        <button
+          type="button"
+          class="filter"
+          data-filter="guias"
+        >
+          Guias
+        </button>
+
+      </div>
+
+
+      <div
+        id="library-grid"
+        class="grid g3 library-grid"
+        data-source="supabase"
+        aria-live="polite"
+        aria-busy="true"
+      >
+
+        <div
+          class="card loading-card"
+          data-library-loading
+        >
+
+          <span class="ic">
+            ◌
+          </span>
+
+
+          <h3>
+            Carregando biblioteca...
+          </h3>
+
+
+          <p>
+            Buscando conteúdos publicados pela Aureon.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="library-empty"
+        class="empty-state"
+        hidden
+        role="status"
+      >
+
+        <span class="ic">
+          📚
+        </span>
+
+
+        <h3>
+          Nenhum conteúdo encontrado
+        </h3>
+
+
+        <p>
+          Ainda não há conteúdos publicados para este filtro.
+        </p>
+
+      </div>
+
+
+      <div
+        id="library-error"
+        class="empty-state data-error"
+        hidden
+        role="alert"
+      >
+
+        <span class="ic">
+          ⚠️
+        </span>
+
+
+        <h3>
+          Não foi possível carregar a biblioteca
+        </h3>
+
+
+        <p>
+
+          O conteúdo não pôde ser consultado no momento.
+          Tente novamente em alguns instantes.
+
+        </p>
+
+
+        <button
+          type="button"
+          class="btn"
+          data-retry="library"
+        >
+          Tentar novamente
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CALCULADORAS
+    ==================================================== -->
+
+    <section
+      id="calculadoras"
+      class="wrap reveal"
+      aria-labelledby="calculadoras-title"
+    >
+
+      <p class="tag">
+        Ferramentas
+      </p>
+
+
+      <h2 id="calculadoras-title">
+        Calculadoras Aureon
+      </h2>
+
+
+      <p class="sub">
+
+        Ferramentas para realizar simulações e compreender melhor
+        diferentes conceitos financeiros.
+
+      </p>
+
+
+      <div class="calculator card">
+
+        <div class="calculator-header">
+
+          <span class="ic">
+            📊
+          </span>
+
+
+          <div>
+
+            <h3>
+              Simulador de investimentos
+            </h3>
+
+
+            <p>
+
+              Simule o crescimento de um patrimônio com
+              aportes mensais e uma taxa hipotética.
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calculator-grid">
+
+          <label>
+
+            Valor inicial
+
+            <input
+              id="calc-initial"
+              type="number"
+              min="0"
+              step="0.01"
+              value="1000"
+              placeholder="R$ 1.000"
+            >
+
+          </label>
+
+
+          <label>
+
+            Aporte mensal
+
+            <input
+              id="calc-monthly"
+              type="number"
+              min="0"
+              step="0.01"
+              value="500"
+              placeholder="R$ 500"
+            >
+
+          </label>
+
+
+          <label>
+
+            Rentabilidade mensal (%)
+
+            <input
+              id="calc-rate"
+              type="number"
+              min="0"
+              step="0.01"
+              value="0.8"
+              placeholder="0,8"
+            >
+
+          </label>
+
+
+          <label>
+
+            Prazo (meses)
+
+            <input
+              id="calc-months"
+              type="number"
+              min="1"
+              step="1"
+              value="60"
+              placeholder="60"
+            >
+
+          </label>
+
+        </div>
+
+
+        <button
+          id="calculate-investment"
+          class="btn"
+          type="button"
+        >
+          Calcular simulação
+        </button>
+
+
+        <div
+          id="calculator-result"
+          class="calculator-result"
+          aria-live="polite"
+        >
+
+          <div>
+
+            <span>
+              Valor final estimado
+            </span>
+
+
+            <strong id="calc-final">
+              R$ 0,00
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Total aportado
+            </span>
+
+
+            <strong id="calc-contributed">
+              R$ 0,00
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Rendimentos simulados
+            </span>
+
+
+            <strong id="calc-interest">
+              R$ 0,00
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid g3 calculator-tools">
+
+        <article class="card tool-card">
+
+          <span class="ic">
+            📈
+          </span>
+
+
+          <h3>
+            Juros compostos
+          </h3>
+
+
+          <p>
+
+            Simule crescimento de valores utilizando
+            diferentes taxas e períodos.
+
+          </p>
+
+
+          <button
+            type="button"
+            class="text-button"
+            data-calculator="compound"
+          >
+            Abrir ferramenta
+          </button>
+
+        </article>
+
+
+        <article class="card tool-card">
+
+          <span class="ic">
+            💵
+          </span>
+
+
+          <h3>
+            Dividendos
+          </h3>
+
+
+          <p>
+
+            Simule cenários hipotéticos de distribuição
+            de dividendos.
+
+          </p>
+
+
+          <button
+            type="button"
+            class="text-button"
+            data-calculator="dividends"
+          >
+            Abrir ferramenta
+          </button>
+
+        </article>
+
+
+        <article class="card tool-card">
+
+          <span class="ic">
+            🏠
+          </span>
+
+
+          <h3>
+            Financiamento
+          </h3>
+
+
+          <p>
+
+            Faça simulações matemáticas de parcelas,
+            juros e custo total.
+
+          </p>
+
+
+          <button
+            type="button"
+            class="text-button"
+            data-calculator="financing"
+          >
+            Abrir ferramenta
+          </button>
+
+        </article>
+
+      </div>
+
+
+      <p class="note">
+
+        ⚠️ As calculadoras apresentam apenas simulações matemáticas.
+        Os resultados não representam garantia de rentabilidade,
+        recomendação individual ou aconselhamento financeiro.
+
+      </p>
+
+    </section>
+
+
+    <!-- ===================================================
+         EDUCAÇÃO FINANCEIRA
+    ==================================================== -->
+
+    <section
+      id="investir"
+      class="wrap reveal"
+      aria-labelledby="investir-title"
+    >
+
+      <p class="tag">
+        Educação financeira
+      </p>
+
+
+      <h2 id="investir-title">
+        Educação financeira
+      </h2>
+
+
+      <p class="sub">
+
+        Conteúdo educativo para quem deseja entender melhor
+        dinheiro, investimentos e construção de patrimônio.
+
+      </p>
+
+
+      <div
+        class="grid g4"
+        id="cats"
+      >
+
+        <article class="card">
+
+          <span class="ic">
+            📚
+          </span>
+
+
+          <h3>
+            Introdução aos investimentos
+          </h3>
+
+
+          <p>
+            Conceitos básicos para quem está começando.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="ic">
+            💰
+          </span>
+
+
+          <h3>
+            Organização financeira
+          </h3>
+
+
+          <p>
+            Conceitos para organizar melhor suas finanças.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="ic">
+            📊
+          </span>
+
+
+          <h3>
+            Diversificação
+          </h3>
+
+
+          <p>
+
+            Entenda como diferentes ativos podem apresentar
+            comportamentos diferentes.
+
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="ic">
+            🏗️
+          </span>
+
+
+          <h3>
+            Construção de patrimônio
+          </h3>
+
+
+          <p>
+
+            Conceitos de longo prazo relacionados à
+            educação financeira.
+
+          </p>
+
+        </article>
+
+      </div>
+
+
+      <div class="coming-soon">
+
+        <span
+          class="status-dot"
+          aria-hidden="true"
+        ></span>
+
+
+        <span>
+          Novos conteúdos serão adicionados continuamente.
+        </span>
+
+      </div>
+
+
+      <p class="note">
+
+        Conteúdo exclusivamente educacional.
+        Não constitui recomendação individual de investimento.
+
+      </p>
+
+    </section>
+
+
+    <!-- ===================================================
+         PROJETOS
+    ==================================================== -->
+
+    <section
+      id="projetos"
+      class="wrap reveal"
+      aria-labelledby="projetos-title"
+    >
+
+      <p class="tag">
+        Aureon
+      </p>
+
+
+      <h2 id="projetos-title">
+        Projetos e experiências
+      </h2>
+
+
+      <p class="sub">
+        Soluções desenvolvidas pela Aureon.
+      </p>
+
+
+      <div
+        id="projects-grid"
+        class="grid g3"
+        data-source="supabase"
+        aria-live="polite"
+        aria-busy="true"
+      >
+
+        <div
+          class="card loading-card"
+          data-project-loading
+        >
+
+          <span class="ic">
+            ◌
+          </span>
+
+
+          <h3>
+            Carregando projetos...
+          </h3>
+
+
+          <p>
+            Buscando projetos publicados pela Aureon.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="projects-empty"
+        class="empty-state"
+        hidden
+        role="status"
+      >
+
+        <span class="ic">
+          🚀
+        </span>
+
+
+        <h3>
+          Novos projetos em desenvolvimento
+        </h3>
+
+
+        <p>
+
+          Esta área será atualizada conforme novos
+          projetos forem publicados.
+
+        </p>
+
+      </div>
+
+
+      <div
+        id="projects-error"
+        class="empty-state data-error"
+        hidden
+        role="alert"
+      >
+
+        <span class="ic">
+          ⚠️
+        </span>
+
+
+        <h3>
+          Não foi possível carregar os projetos
+        </h3>
+
+
+        <p>
+
+          O conteúdo não pôde ser consultado no momento.
+          Tente novamente em alguns instantes.
+
+        </p>
+
+
+        <button
+          type="button"
+          class="btn"
+          data-retry="projects"
+        >
+          Tentar novamente
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         NOVIDADES
+    ==================================================== -->
+
+    <section
+      id="novidades"
+      class="wrap reveal"
+      aria-labelledby="novidades-title"
+    >
+
+      <p class="tag">
+        Atualizações
+      </p>
+
+
+      <h2 id="novidades-title">
+        Novidades da Aureon
+      </h2>
+
+
+      <p class="sub">
+
+        Acompanhe novos projetos, ferramentas,
+        conteúdos e atualizações.
+
+      </p>
+
+
+      <div
+        id="news-grid"
+        class="grid g3"
+        data-source="supabase"
+        aria-live="polite"
+        aria-busy="true"
+      >
+
+        <div
+          class="card loading-card"
+          data-news-loading
+        >
+
+          <span class="ic">
+            ◌
+          </span>
+
+
+          <h3>
+            Carregando novidades...
+          </h3>
+
+
+          <p>
+            Buscando atualizações.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="news-empty"
+        class="empty-state"
+        hidden
+        role="status"
+      >
+
+        <span class="ic">
+          📰
+        </span>
+
+
+        <h3>
+          Nenhuma novidade publicada
+        </h3>
+
+
+        <p>
+          Novas atualizações aparecerão aqui.
+        </p>
+
+      </div>
+
+
+      <div
+        id="news-error"
+        class="empty-state data-error"
+        hidden
+        role="alert"
+      >
+
+        <span class="ic">
+          ⚠️
+        </span>
+
+
+        <h3>
+          Não foi possível carregar as novidades
+        </h3>
+
+
+        <p>
+          As atualizações não puderam ser consultadas no momento.
+        </p>
+
+
+        <button
+          type="button"
+          class="btn"
+          data-retry="news"
+        >
+          Tentar novamente
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         DIFERENCIAIS
+    ==================================================== -->
+
+    <section
+      id="diferenciais"
+      class="wrap reveal"
+      aria-labelledby="diferenciais-title"
+    >
+
+      <p class="tag">
+        Diferenciais
+      </p>
+
+
+      <h2 id="diferenciais-title">
+        Por que a Aureon
+      </h2>
+
+
+      <div class="grid g4">
+
+        <article class="card">
+
+          <span class="card-number">
+            01
+          </span>
+
+
+          <h3>
+            Tecnologia
+          </h3>
+
+
+          <p>
+            Utilização de ferramentas e soluções modernas.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            02
+          </span>
+
+
+          <h3>
+            Personalização
+          </h3>
+
+
+          <p>
+            Cada solução pode ser adaptada às necessidades do projeto.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            03
+          </span>
+
+
+          <h3>
+            Simplicidade
+          </h3>
+
+
+          <p>
+            Interfaces intuitivas e fáceis de utilizar.
+          </p>
+
+        </article>
+
+
+        <article class="card">
+
+          <span class="card-number">
+            04
+          </span>
+
+
+          <h3>
+            Inovação
+          </h3>
+
+
+          <p>
+            Busca constante por novas ideias e soluções digitais.
+          </p>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CRIADOR
+    ==================================================== -->
+
+    <section
+      id="criador"
+      class="wrap reveal"
+      aria-labelledby="criador-title"
+    >
+
+      <div class="card creator">
+
+        <svg
+          class="mark"
+          viewBox="0 0 100 100"
+          aria-hidden="true"
+        >
+
+          <use href="#logo"></use>
+
+        </svg>
+
+
+        <div>
+
+          <p class="tag">
+            Criador
+          </p>
+
+
+          <h2 id="criador-title">
+            Guilherme Lima Vieira
+          </h2>
+
+
+          <p class="gold">
+            Criador da Aureon
+          </p>
+
+
+          <p>
+
+            A Aureon é uma iniciativa independente criada
+            para transformar ideias em soluções digitais e
+            desenvolver novos projetos em tecnologia e educação.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CTA
+    ==================================================== -->
+
+    <section
+      class="wrap reveal"
+      aria-labelledby="cta-title"
+    >
+
+      <div class="cta-box">
+
+        <p class="tag">
+          Vamos criar
+        </p>
+
+
+        <h2 id="cta-title">
+
+          Tem uma ideia?
+          <br>
+          Vamos transformar em realidade.
+
+        </h2>
+
+
+        <p>
+
+          Conte-nos o que você precisa e descubra como a Aureon
+          pode transformar sua ideia em uma solução digital.
+
+        </p>
+
+
+        <div class="cta-row">
+
+          <a
+            class="btn"
+            href="#contato"
+          >
+            Solicitar orçamento
+          </a>
+
+
+          <a
+            class="btn ghost"
+            href="https://wa.me/5599984883104"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CONTATO
+    ==================================================== -->
+
+    <section
+      id="contato"
+      class="wrap reveal"
+      aria-labelledby="contato-title"
+    >
+
+      <p class="tag">
+        Contato
+      </p>
+
+
+      <h2 id="contato-title">
+        Fale com a Aureon
+      </h2>
+
+
+      <p class="sub">
+        Conte um pouco sobre o que você precisa.
+      </p>
+
+
+      <form
+        id="form"
+        novalidate
+        autocomplete="on"
+      >
+
+        <label>
+
+          Nome
+
+          <input
+            name="nome"
+            type="text"
+            required
+            minlength="2"
+            maxlength="100"
+            autocomplete="name"
+            placeholder="Seu nome"
+          >
+
+          <small></small>
+
+        </label>
+
+
+        <label>
+
+          E-mail
+
+          <input
+            name="email"
+            type="email"
+            required
+            maxlength="150"
+            autocomplete="email"
+            placeholder="seu@email.com"
+          >
+
+          <small></small>
+
+        </label>
+
+
+        <label>
+
+          WhatsApp
+
+          <input
+            name="whats"
+            type="tel"
+            required
+            maxlength="30"
+            inputmode="tel"
+            placeholder="(99) 99999-9999"
+            autocomplete="tel"
+          >
+
+          <small></small>
+
+        </label>
+
+
+        <label>
+
+          Tipo de serviço
+
+          <select
+            name="servico"
+            required
+          >
+
+            <option
+              value=""
+              selected
+              disabled
+            >
+              Selecione uma opção
+            </option>
+
+
+            <option value="site">
+              Desenvolvimento de Site
+            </option>
+
+
+            <option value="sistema">
+              Sistema Web
+            </option>
+
+
+            <option value="automacao">
+              Automação
+            </option>
+
+
+            <option value="personalizado">
+              Solução Personalizada
+            </option>
+
+
+            <option value="consultoria">
+              Consultoria
+            </option>
+
+
+            <option value="outro">
+              Outro
+            </option>
+
+          </select>
+
+          <small></small>
+
+        </label>
+
+
+        <label>
+
+          Assunto
+
+          <input
+            name="assunto"
+            type="text"
+            required
+            minlength="3"
+            maxlength="150"
+            placeholder="Como podemos ajudar?"
+          >
+
+          <small></small>
+
+        </label>
+
+
+        <label>
+
+          Orçamento estimado
+
+          <select name="orcamento">
+
+            <option value="">
+              Prefiro informar depois
+            </option>
+
+
+            <option value="ate-500">
+              Até R$ 500
+            </option>
+
+
+            <option value="500-1500">
+              R$ 500 – R$ 1.500
+            </option>
+
+
+            <option value="1500-3500">
+              R$ 1.500 – R$ 3.500
+            </option>
+
+
+            <option value="acima-3500">
+              Acima de R$ 3.500
+            </option>
+
+          </select>
+
+          <small></small>
+
+        </label>
+
+
+        <label class="full">
+
+          Mensagem
+
+          <textarea
+            name="msg"
+            rows="6"
+            required
+            minlength="10"
+            maxlength="5000"
+            placeholder="Conte um pouco sobre sua ideia ou necessidade..."
+          ></textarea>
+
+          <small></small>
+
+        </label>
+
+
+        <input
+          name="site"
+          class="hp"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        >
+
+
+        <div class="full cta-row">
+
+          <button
+            class="btn"
+            type="submit"
+          >
+            Enviar solicitação
+          </button>
+
+
+          <a
+            class="btn ghost"
+            href="https://wa.me/5599984883104"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Falar pelo WhatsApp
+          </a>
+
+        </div>
+
+
+        <p
+          class="full ok"
+          id="ok"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
+      </form>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <footer>
+
+    <div class="wrap foot">
+
+      <div>
+
+        <a
+          href="#inicio"
+          class="brand footer-brand"
+          aria-label="Voltar ao início"
+        >
+
+          <svg
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+          >
+
+            <use href="#logo"></use>
+
+          </svg>
+
+
+          <span>
+            AUREON
+          </span>
+
+        </a>
+
+
+        <p>
+          Ideias que se tornam tecnologia.
+        </p>
+
+
+        <p class="mut">
+          Criado por Guilherme Lima Vieira
+        </p>
+
+      </div>
+
+
+      <nav aria-label="Navegação do rodapé">
+
+        <a href="#inicio">
+          Início
+        </a>
+
+
+        <a href="#sobre">
+          Sobre
+        </a>
+
+
+        <a href="#servicos">
+          Serviços
+        </a>
+
+
+        <a href="#processo">
+          Processo
+        </a>
+
+
+        <a href="#aureon-ai">
+          Aureon AI
+        </a>
+
+
+        <a href="#biblioteca">
+          Biblioteca
+        </a>
+
+
+        <a href="#calculadoras">
+          Calculadoras
+        </a>
+
+
+        <a href="#investir">
+          Educação Financeira
+        </a>
+
+
+        <a href="#projetos">
+          Projetos
+        </a>
+
+
+        <a href="#novidades">
+          Novidades
+        </a>
+
+
+        <a href="#diferenciais">
+          Diferenciais
+        </a>
+
+
+        <a href="#contato">
+          Contato
+        </a>
+
+      </nav>
+
+
+      <div class="admin-area">
+
+        <a
+          href="admin/index.html"
+          class="admin-link"
+          aria-label="Acessar área administrativa"
+        >
+          🔐 Área administrativa
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="wrap legal">
+
+      <span>
+        © 2026 Aureon. Todos os direitos reservados.
+      </span>
+
+
+      <span>
+
+        <a href="privacidade.html">
+          Política de Privacidade
+        </a>
+
+
+        <span aria-hidden="true">
+          ·
+        </span>
+
+
+        <a href="termos.html">
+          Termos de Uso
+        </a>
+
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =====================================================
+       MODAL LOGIN
+  ====================================================== -->
+
+  <div
+    id="auth-modal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+      class="modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-title"
+    >
+
+      <button
+        id="close-auth"
+        type="button"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+      <span class="library-category">
+        Área do cliente
+      </span>
+
+
+      <h2 id="auth-title">
+        Acesse sua conta
+      </h2>
+
+
+      <p>
+        Entre na sua conta ou crie um cadastro gratuito.
+      </p>
+
+
+      <div class="auth-modal-tabs">
+
+        <button
+          type="button"
+          class="auth-tab active"
+          data-auth-tab="login"
+        >
+          Entrar
+        </button>
+
+
+        <button
+          type="button"
+          class="auth-tab"
+          data-auth-tab="register"
+        >
+          Criar conta
+        </button>
+
+      </div>
+
+
+      <form
+        id="login-form"
+        class="auth-form active"
+      >
+
+        <label>
+
+          E-mail
+
+          <input
+            id="login-email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="seu@email.com"
+          >
+
+        </label>
+
+
+        <label>
+
+          Senha
+
+          <input
+            id="login-password"
+            type="password"
+            required
+            autocomplete="current-password"
+            placeholder="Sua senha"
+          >
+
+        </label>
+
+
+        <button
+          class="btn"
+          type="submit"
+        >
+          Entrar
+        </button>
+
+
+        <button
+          id="forgot-password"
+          class="text-button"
+          type="button"
+        >
+          Esqueci minha senha
+        </button>
+
+      </form>
+
+
+      <form
+        id="register-form"
+        class="auth-form"
+      >
+
+        <label>
+
+          Nome
+
+          <input
+            id="register-name"
+            type="text"
+            required
+            minlength="2"
+            maxlength="100"
+            autocomplete="name"
+            placeholder="Seu nome"
+          >
+
+        </label>
+
+
+        <label>
+
+          E-mail
+
+          <input
+            id="register-email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="seu@email.com"
+          >
+
+        </label>
+
+
+        <label>
+
+          WhatsApp
+
+          <input
+            id="register-phone"
+            type="tel"
+            maxlength="30"
+            autocomplete="tel"
+            placeholder="(99) 99999-9999"
+          >
+
+        </label>
+
+
+        <label>
+
+          Senha
+
+          <input
+            id="register-password"
+            type="password"
+            required
+            minlength="6"
+            autocomplete="new-password"
+            placeholder="Mínimo de 6 caracteres"
+          >
+
+        </label>
+
+
+        <label>
+
+          Confirmar senha
+
+          <input
+            id="register-password-confirm"
+            type="password"
+            required
+            minlength="6"
+            autocomplete="new-password"
+            placeholder="Digite novamente"
+          >
+
+        </label>
+
+
+        <button
+          class="btn"
+          type="submit"
+        >
+          Criar minha conta
+        </button>
+
+      </form>
+
+
+      <div
+        id="auth-error"
+        class="auth-error"
+        role="alert"
+      ></div>
+
+
+      <div
+        id="auth-success"
+        class="auth-success"
+        role="status"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       NOTIFICAÇÕES
+  ====================================================== -->
+
+  <div
+    id="notifications-modal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+      class="modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notifications-title"
+    >
+
+      <button
+        id="close-notifications"
+        type="button"
+        aria-label="Fechar notificações"
+      >
+        ×
+      </button>
+
+
+      <span class="library-category">
+        Central
+      </span>
+
+
+      <h2 id="notifications-title">
+        Notificações
+      </h2>
+
+
+      <div
+        id="notification-list"
+        class="notification-list"
+      >
+
+        <p>
+          Nenhuma notificação.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       SUPORTE
+  ====================================================== -->
+
+  <div
+    id="support-modal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+      class="modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="support-title"
+    >
+
+      <button
+        id="close-support"
+        type="button"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+      <span class="library-category">
+        Atendimento
+      </span>
+
+
+      <h2 id="support-title">
+        Como podemos ajudar?
+      </h2>
+
+
+      <div class="support-options">
+
+        <button
+          class="support-option"
+          type="button"
+          data-support="orcamento"
+        >
+          📋
+
+          <strong>
+            Solicitar orçamento
+          </strong>
+
+        </button>
+
+
+        <button
+          class="support-option"
+          type="button"
+          data-support="projeto"
+        >
+          📁
+
+          <strong>
+            Meu projeto
+          </strong>
+
+        </button>
+
+
+        <button
+          class="support-option"
+          type="button"
+          data-support="suporte"
+        >
+          🛠️
+
+          <strong>
+            Suporte técnico
+          </strong>
+
+        </button>
+
+
+        <button
+          class="support-option"
+          type="button"
+          data-support="mensagem"
+        >
+          💬
+
+          <strong>
+            Enviar mensagem
+          </strong>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MODAL BIBLIOTECA
+  ====================================================== -->
+
+  <div
+    id="content-modal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+      class="modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+
+      <button
+        id="close-modal"
+        type="button"
+        aria-label="Fechar conteúdo"
+      >
+        ×
+      </button>
+
+
+      <span
+        id="modal-category"
+        class="library-category"
+      >
+        Conteúdo
+      </span>
+
+
+      <h2 id="modal-title">
+        Conteúdo Aureon
+      </h2>
+
+
+      <div id="modal-body">
+        Carregando...
+      </div>
+
+
+      <div
+        id="comments-section"
+        class="comments-section"
+      >
+
+        <h3>
+          Comentários
+        </h3>
+
+
+        <div
+          id="comments-list"
+          class="comments-list"
+        ></div>
+
+
+        <form
+          id="comment-form"
+          class="comment-form"
+        >
+
+          <input
+            type="hidden"
+            id="comment-article-id"
+            name="article_id"
+          >
+
+
+          <label>
+
+            Seu nome
+
+            <input
+              type="text"
+              name="name"
+              maxlength="100"
+              required
+              placeholder="Seu nome"
+            >
+
+          </label>
+
+
+          <label>
+
+            Comentário
+
+            <textarea
+              name="comment"
+              maxlength="1000"
+              rows="4"
+              required
+              placeholder="Escreva um comentário..."
+            ></textarea>
+
+          </label>
+
+
+          <button
+            class="btn"
+            type="submit"
+          >
+            Enviar comentário
+          </button>
+
+
+          <small
+            id="comment-status"
+            role="status"
+          ></small>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MODAL CALCULADORAS
+  ====================================================== -->
+
+  <div
+    id="calculator-modal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div class="modal-overlay"></div>
+
+
+    <div
+      class="modal-content calculator-modal-content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="calculator-modal-title"
+    >
+
+      <button
+        id="close-calculator"
+        type="button"
+        aria-label="Fechar calculadora"
+      >
+        ×
+      </button>
+
+
+      <span class="library-category">
+        Aureon Tools
+      </span>
+
+
+      <h2 id="calculator-modal-title">
+        Calculadora
+      </h2>
+
+
+      <div id="calculator-modal-body">
+        Carregando ferramenta...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       AUREON AI
+  ====================================================== -->
+
+  <div
+    id="ai-chat"
+    class="ai-chat"
+    aria-hidden="true"
+  >
+
+    <div class="ai-chat-header">
+
+      <div>
+
+        <strong>
+          🤖 Aureon AI
+        </strong>
+
+
+        <small>
+          Assistente virtual
+        </small>
+
+      </div>
+
+
+      <button
+        type="button"
+        id="close-ai"
+        aria-label="Fechar Aureon AI"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      id="ai-messages"
+      class="ai-messages"
+      aria-live="polite"
+      aria-relevant="additions"
+    >
+
+      <div
+        class="ai-message bot"
+        data-ai-welcome
+      >
+
+        Olá! 👋
+
+        <br><br>
+
+        Sou a Aureon AI.
+
+        <br><br>
+
+        Estou verificando minha conexão com o serviço de inteligência artificial...
+
+      </div>
+
+    </div>
+
+
+    <form
+      id="ai-form"
+      class="ai-input"
+    >
+
+      <input
+        id="ai-input"
+        type="text"
+        placeholder="Digite sua pergunta..."
+        autocomplete="off"
+        aria-label="Pergunta para Aureon AI"
+        maxlength="1000"
+        required
+      >
+
+
+      <button
+        type="submit"
+        aria-label="Enviar pergunta"
+        title="Enviar pergunta"
+      >
+        ➤
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <!-- =====================================================
+       BOTÃO IA
+  ====================================================== -->
+
+  <button
+    id="ai-floating"
+    type="button"
+    aria-label="Abrir Aureon AI"
+    title="Aureon AI"
+  >
+    🤖
+  </button>
+
+
+  <!-- =====================================================
+       WHATSAPP
+  ====================================================== -->
+
+  <a
+    id="wa"
+    href="https://wa.me/5599984883104"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Falar com a Aureon pelo WhatsApp"
+  >
+
+    <svg
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+
+      <path
+        d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.2c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.3 0 .5l-.4.5c-.1.1-.3.3-.1.6.6 1 1.3 1.6 2.3 2.1.3.1.5.1.6-.1l.8-1c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.7-.1 1.3.1.2.1.7-.1 1.3z"
+      />
+
+    </svg>
+
+
+    <span>
+      Falar no WhatsApp
+    </span>
+
+  </a>
+
+
+  <!-- =====================================================
+       TOPO
+  ====================================================== -->
+
+  <button
+    id="top"
+    type="button"
+    aria-label="Voltar ao topo"
+    title="Voltar ao topo"
+  >
+    ↑
+  </button>
+
+
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
+
+  <div
+    id="toast-container"
+    class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+
+  <!-- =====================================================
+       CONFIG
+  ====================================================== -->
+
+  <script src="js/config.js"></script>
+
+
+  <!-- =====================================================
+       SUPABASE
+  ====================================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <!-- =====================================================
+       PROTEÇÃO / MONITORAMENTO DO AUREON AI
+       
+       Este bloco NÃO cria a Function.
+       Ele apenas monitora a resposta real da Function.
+       
+       404 = INDISPONÍVEL
+       200/201/204 = ONLINE
+       4xx/5xx = INDISPONÍVEL
+       erro de rede = INDISPONÍVEL
+    ====================================================== -->
+
+  <script>
+
+    (() => {
+
+      const AI_ENDPOINT =
+        "/.netlify/functions/chat";
+
+
+      const statusElement =
+        document.getElementById(
+          "ai-online-status"
+        );
+
+
+      const inputElement =
+        document.getElementById(
+          "ai-input"
+        );
+
+
+      const sendButton =
+        document.querySelector(
+          "#ai-form button[type='submit']"
+        );
+
+
+      function setAIStatus(
+        state,
+        text
+      ) {
+
+        if (!statusElement) {
+          return;
+        }
+
+
+        statusElement.classList.remove(
+          "online",
+          "checking",
+          "offline",
+          "error"
+        );
+
+
+        statusElement.classList.add(
+          state
+        );
+
+
+        statusElement.dataset.aiStatus =
+          state;
+
+
+        statusElement.textContent =
+          text;
+      }
+
+
+      window.aureonAIStatus =
+        setAIStatus;
+
+
+      setAIStatus(
+        "checking",
+        "VERIFICANDO"
+      );
+
+
+      /* =================================================
+         MONITORAMENTO DO FETCH
+      ================================================= */
+
+      if (
+        typeof window.fetch ===
+        "function"
+      ) {
+
+        const originalFetch =
+          window.fetch.bind(
+            window
+          );
+
+
+        window.fetch =
+          async function(
+            input,
+            init
+          ) {
+
+            let url = "";
+
+
+            try {
+
+              if (
+                typeof input ===
+                "string"
+              ) {
+
+                url = input;
+
+              } else if (
+                input &&
+                input.url
+              ) {
+
+                url =
+                  input.url;
+
+              }
+
+
+              const response =
+                await originalFetch(
+                  input,
+                  init
+                );
+
+
+              if (
+                url.includes(
+                  AI_ENDPOINT
+                )
+              ) {
+
+                if (
+                  response.ok
+                ) {
+
+                  setAIStatus(
+                    "online",
+                    "ONLINE"
+                  );
+
+                } else {
+
+                  setAIStatus(
+                    "offline",
+                    "INDISPONÍVEL"
+                  );
+
+                }
+
+              }
+
+
+              return response;
+
+            } catch (error) {
+
+              if (
+                url.includes(
+                  AI_ENDPOINT
+                )
+              ) {
+
+                setAIStatus(
+                  "offline",
+                  "INDISPONÍVEL"
+                );
+
+              }
+
+
+              throw error;
+            }
+
+          };
+
+      }
+
+
+      /* =================================================
+         FUNÇÃO GLOBAL PARA OUTROS SCRIPTS
+      ================================================= */
+
+      window.setAureonAIStatus =
+        setAIStatus;
+
+
+      /* =================================================
+         EVENTO PARA MAIN.JS
+      ================================================= */
+
+      window.addEventListener(
+        "aureon:ai-status",
+        event => {
+
+          const detail =
+            event.detail || {};
+
+
+          if (
+            detail.status ===
+            "online"
+          ) {
+
+            setAIStatus(
+              "online",
+              "ONLINE"
+            );
+
+          } else if (
+            detail.status ===
+            "offline"
+          ) {
+
+            setAIStatus(
+              "offline",
+              "INDISPONÍVEL"
+            );
+
+          } else if (
+            detail.status ===
+            "checking"
+          ) {
+
+            setAIStatus(
+              "checking",
+              "VERIFICANDO"
+            );
+
+          }
+
+        }
+      );
+
+
+      /* =================================================
+         FORM SUBMIT — FEEDBACK VISUAL
+         
+         O main.js continua sendo responsável pela
+         comunicação real com a API.
+      ================================================= */
+
+      const aiForm =
+        document.getElementById(
+          "ai-form"
+        );
+
+
+      aiForm?.addEventListener(
+        "submit",
+        () => {
+
+          setAIStatus(
+            "checking",
+            "VERIFICANDO"
+          );
+
+
+          if (inputElement) {
+
+            inputElement.setAttribute(
+              "aria-busy",
+              "true"
+            );
+
+          }
+
+
+          if (sendButton) {
+
+            sendButton.setAttribute(
+              "aria-busy",
+              "true"
+            );
+
+          }
+
+        },
+        true
+      );
+
+
+      /* =================================================
+         QUANDO A JANELA VOLTA A FICAR VISÍVEL
+      ================================================= */
+
+      document.addEventListener(
+        "visibilitychange",
+        () => {
+
+          if (
+            document.visibilityState ===
+            "visible"
+          ) {
+
+            const current =
+              statusElement?.dataset
+                ?.aiStatus;
+
+
+            if (
+              !current ||
+              current ===
+                "checking"
+            ) {
+
+              setAIStatus(
+                "checking",
+                "VERIFICANDO"
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    })();
+
+  </script>
+
+
+  <!-- MAIN JS -->
+
+  <script
+    src="js/main.js"
+    defer
+  ></script>
+
+
+  <!-- =====================================================
+       INTERAÇÕES VISUAIS
+  ====================================================== -->
+
+  <script>
+
+    (() => {
+
+      const reducedMotion =
+        window.matchMedia &&
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+
+      if (reducedMotion) {
+        return;
+      }
+
+
+      /* =================================================
+         GLOW DO CURSOR
+      ================================================= */
+
+      const cursorGlow =
+        document.getElementById(
+          "cursor-glow"
+        );
+
+
+      if (
+        cursorGlow &&
+        window.matchMedia(
+          "(pointer:fine)"
+        ).matches
+      ) {
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        let glowX = 0;
+        let glowY = 0;
+
+
+        document.addEventListener(
+          "mousemove",
+          event => {
+
+            mouseX =
+              event.clientX;
+
+            mouseY =
+              event.clientY;
+
+
+            document.body.classList.add(
+              "cursor-active"
+            );
+
+          },
+          {
+            passive: true
+          }
+        );
+
+
+        const animateGlow =
+          () => {
+
+            glowX +=
+              (mouseX - glowX) *
+              .12;
+
+
+            glowY +=
+              (mouseY - glowY) *
+              .12;
+
+
+            cursorGlow.style.left =
+              `${glowX}px`;
+
+
+            cursorGlow.style.top =
+              `${glowY}px`;
+
+
+            requestAnimationFrame(
+              animateGlow
+            );
+
+          };
+
+
+        animateGlow();
+
+      }
+
+
+      /* =================================================
+         CARDS COM MICRO MOVIMENTO
+      ================================================= */
+
+      if (
+        window.matchMedia(
+          "(pointer:fine)"
+        ).matches
+      ) {
+
+        const cards =
+          document.querySelectorAll(
+            ".service-card, .tool-card"
+          );
+
+
+        cards.forEach(
+          card => {
+
+            card.addEventListener(
+              "mousemove",
+              event => {
+
+                const rect =
+                  card.getBoundingClientRect();
+
+
+                const x =
+                  event.clientX -
+                  rect.left;
+
+
+                const y =
+                  event.clientY -
+                  rect.top;
+
+
+                const rotateY =
+                  (
+                    (x / rect.width) -
+                    .5
+                  ) * 4;
+
+
+                const rotateX =
+                  (
+                    (y / rect.height) -
+                    .5
+                  ) * -4;
+
+
+                card.style.transform =
+                  `translateY(-6px) perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+              }
+            );
+
+
+            card.addEventListener(
+              "mouseleave",
+              () => {
+
+                card.style.transform =
+                  "";
+
+              }
+            );
+
+          }
+        );
+
+      }
+
+    })();
+
+  </script>
+
+
+  <!-- =====================================================
+       COMPONENTES AUXILIARES
+  ====================================================== -->
+
+  <script>
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        const authModal =
+          document.getElementById(
+            "auth-modal"
+          );
+
+
+        const loginButton =
+          document.getElementById(
+            "client-login"
+          );
+
+
+        const closeAuth =
+          document.getElementById(
+            "close-auth"
+          );
+
+
+        const notificationsButton =
+          document.getElementById(
+            "client-notifications"
+          );
+
+
+        const notificationsModal =
+          document.getElementById(
+            "notifications-modal"
+          );
+
+
+        const closeNotifications =
+          document.getElementById(
+            "close-notifications"
+          );
+
+
+        const profileButton =
+          document.getElementById(
+            "client-profile"
+          );
+
+
+        const supportModal =
+          document.getElementById(
+            "support-modal"
+          );
+
+
+        const closeSupport =
+          document.getElementById(
+            "close-support"
+          );
+
+
+        /* =================================================
+           MODAIS
+        ================================================= */
+
+        function openModal(
+          modal
+        ) {
+
+          if (!modal) {
+            return;
+          }
+
+
+          modal.classList.add(
+            "open"
+          );
+
+
+          modal.setAttribute(
+            "aria-hidden",
+            "false"
+          );
+
+
+          document.body.classList.add(
+            "modal-open"
+          );
+
+        }
+
+
+        function closeModal(
+          modal
+        ) {
+
+          if (!modal) {
+            return;
+          }
+
+
+          modal.classList.remove(
+            "open"
+          );
+
+
+          modal.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+
+          document.body.classList.remove(
+            "modal-open"
+          );
+
+        }
+
+
+        loginButton?.addEventListener(
+          "click",
+          () =>
+            openModal(
+              authModal
+            )
+        );
+
+
+        closeAuth?.addEventListener(
+          "click",
+          () =>
+            closeModal(
+              authModal
+            )
+        );
+
+
+        notificationsButton?.addEventListener(
+          "click",
+          () =>
+            openModal(
+              notificationsModal
+            )
+        );
+
+
+        closeNotifications?.addEventListener(
+          "click",
+          () =>
+            closeModal(
+              notificationsModal
+            )
+        );
+
+
+        closeSupport?.addEventListener(
+          "click",
+          () =>
+            closeModal(
+              supportModal
+            )
+        );
+
+
+        profileButton?.addEventListener(
+          "click",
+          () => {
+
+            const dashboard =
+              document.getElementById(
+                "area-cliente"
+              );
+
+
+            if (!dashboard) {
+              return;
+            }
+
+
+            dashboard.classList.add(
+              "active"
+            );
+
+
+            dashboard.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+          }
+        );
+
+
+        /* =================================================
+           OVERLAY
+        ================================================= */
+
+        document
+          .querySelectorAll(
+            ".modal-overlay"
+          )
+          .forEach(
+            overlay => {
+
+              overlay.addEventListener(
+                "click",
+                () => {
+
+                  const modal =
+                    overlay.closest(
+                      ".modal"
+                    );
+
+
+                  closeModal(
+                    modal
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        /* =================================================
+           ESC
+        ================================================= */
+
+        document.addEventListener(
+          "keydown",
+          event => {
+
+            if (
+              event.key !==
+              "Escape"
+            ) {
+
+              return;
+            }
+
+
+            document
+              .querySelectorAll(
+                ".modal.open"
+              )
+              .forEach(
+                modal => {
+
+                  closeModal(
+                    modal
+                  );
+
+                }
+              );
+
+          }
+        );
+
+
+        /* =================================================
+           TABS
+        ================================================= */
+
+        document
+          .querySelectorAll(
+            "[data-auth-tab]"
+          )
+          .forEach(
+            tab => {
+
+              tab.addEventListener(
+                "click",
+                () => {
+
+                  const type =
+                    tab.dataset
+                      .authTab;
+
+
+                  document
+                    .querySelectorAll(
+                      "[data-auth-tab]"
+                    )
+                    .forEach(
+                      button => {
+
+                        button.classList.toggle(
+                          "active",
+                          button ===
+                            tab
+                        );
+
+                      }
+                    );
+
+
+                  document
+                    .querySelectorAll(
+                      ".auth-form"
+                    )
+                    .forEach(
+                      form => {
+
+                        form.classList.toggle(
+                          "active",
+                          form.id ===
+                            `${type}-form`
+                        );
+
+                      }
+                    );
+
+                }
+              );
+
+            }
+          );
+
+
+        /* =================================================
+           SUPORTE
+        ================================================= */
+
+        document
+          .querySelectorAll(
+            ".support-option"
+          )
+          .forEach(
+            option => {
+
+              option.addEventListener(
+                "click",
+                () => {
+
+                  const type =
+                    option.dataset
+                      .support;
+
+
+                  closeModal(
+                    supportModal
+                  );
+
+
+                  const contact =
+                    document.getElementById(
+                      "contato"
+                    );
+
+
+                  if (!contact) {
+                    return;
+                  }
+
+
+                  contact.scrollIntoView({
+                    behavior:
+                      "smooth"
+                  });
+
+
+                  setTimeout(
+                    () => {
+
+                      const service =
+                        document.querySelector(
+                          '[name="servico"]'
+                        );
+
+
+                      if (!service) {
+                        return;
+                      }
+
+
+                      const values = {
+
+                        orcamento:
+                          "personalizado",
+
+                        projeto:
+                          "personalizado",
+
+                        suporte:
+                          "sistema",
+
+                        mensagem:
+                          "outro"
+
+                      };
+
+
+                      if (
+                        values[type]
+                      ) {
+
+                        service.value =
+                          values[type];
+
+                      }
+
+                    },
+                    500
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        /* =================================================
+           ORÇAMENTO
+        ================================================= */
+
+        document
+          .querySelectorAll(
+            'a[href="#contato"]'
+          )
+          .forEach(
+            link => {
+
+              link.addEventListener(
+                "click",
+                () => {
+
+                  setTimeout(
+                    () => {
+
+                      const firstInput =
+                        document.querySelector(
+                          '#contato input[name="nome"]'
+                        );
+
+
+                      firstInput?.focus();
+
+                    },
+                    500
+                  );
+
+                }
+              );
+
+            }
+          );
+
+
+        /* =================================================
+           RETRY
+        ================================================= */
+
+        document
+          .querySelectorAll(
+            "[data-retry]"
+          )
+          .forEach(
+            button => {
+
+              button.addEventListener(
+                "click",
+                () => {
+
+                  const type =
+                    button.dataset
+                      .retry;
+
+
+                  window.dispatchEvent(
+                    new CustomEvent(
+                      "aureon:retry",
+                      {
+                        detail: {
+                          type
+                        }
+                      }
+                    )
+                  );
+
+                }
+              );
+
+            }
+          );
+
+      }
+
+    );
+
+  </script>
+
+
+</body>
+
+</html>
